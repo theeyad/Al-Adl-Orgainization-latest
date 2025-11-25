@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة المكتب القانوني</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Material Symbols -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="../img/logo1.png" type="image/x-icon">
+
+    <!-- Base Styles -->
+    <link href="../css/base.css" rel="stylesheet" />
+
+    <!-- Dashboard Styles -->
+    <link href="./dashboard.css" rel="stylesheet" />
+
+    <!-- SDK Scripts -->
+    <script src="/_sdk/data_sdk.js"></script>
+    <script src="/_sdk/element_sdk.js"></script>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <a href="../index.html">
+                <h1 id="firm-name" class="sidebar-title">مؤسسة العدل</h1>
+            </a>
+            <p class="sidebar-subtitle">نظام الإدارة المتكامل</p>
+        </div>
+        <nav class="sidebar-nav">
+            <a class="nav-item active" data-page="home">
+                <i class="fas fa-home"></i>
+                <span>الصفحة الرئيسية</span>
+            </a>
+            <a class="nav-item" data-page="services">
+                <i class="fas fa-briefcase"></i>
+                <span>الخدمات</span>
+            </a>
+            <a class="nav-item" data-page="posts">
+                <i class="fas fa-newspaper"></i>
+                <span>المنشورات</span>
+            </a>
+            <a class="nav-item" data-page="cases">
+                <i class="fas fa-gavel"></i>
+                <span>جدول القضايا</span>
+            </a>
+            <a class="nav-item" data-page="Administrative">
+                <i class="fas fa-book"></i>
+                <span>الأعمال الإدارية</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <img src="../img/Ahmed-Alghubashi.jpg" alt="lawyer profile image">
+                </div>
+                <div class="user-details">
+                    <p class="user-name">أحمد الغباشي</p>
+                    <p class="user-email">mwsstaldl@gmail.com</p>
+                </div>
+            </div>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>تسجيل الخروج</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Bar -->
+        <header class="top-bar">
+            <div class="quote-container">
+                <p class="dashboard-quote">وَإِذَا حَكَمْتُم بَيْنَ النَّاسِ أَن تَحْكُمُوا بِالْعَدْلِ</p>
+            </div>
+            <div class="header-controls">
+                <div id="clock" class="clock"></div>
+                <div class="mobile-menu-button" id="sidebar-toggle">
+                    <div class="toggle" aria-label="تبديل القائمة الجانبية">
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Container -->
+        <div class="page-container">
+            <!-- Home Page -->
+            <div id="home-page" class="page-content">
+                <section class="content-section">
+                    <div class="section-header">
+                        <h2>ما نقوم به</h2>
+                        <button class="btn-primary" onclick="showAddCardModal('home', 'header1')">
+                            <i class="fas fa-plus"></i>
+                            <span>إضافة بطاقة</span>
+                        </button>
+                    </div>
+                    <div id="service-cards-section" class="cards-grid"></div>
+                </section>
+
+                <section class="content-section">
+                    <div class="section-header">
+                        <h2>أحدث المنشورات</h2>
+                        <button class="btn-primary" onclick="showAddCardModal('home', 'header2')">
+                            <i class="fas fa-plus"></i>
+                            <span>إضافة بطاقة</span>
+                        </button>
+                    </div>
+                    <div id="home-header2-cards" class="cards-grid"></div>
+                </section>
+
+                <section class="content-section">
+                    <div class="section-header">
+                        <h2>آراء عملائنا</h2>
+                        <button class="btn-primary" onclick="showAddCardModal('home', 'header3')">
+                            <i class="fas fa-plus"></i>
+                            <span>إضافة بطاقة</span>
+                        </button>
+                    </div>
+                    <div id="home-header3-cards" class="cards-grid"></div>
+                </section>
+            </div>
+
+            <!-- Services Page -->
+            <div id="services-page" class="page-content page-hidden">
+                <section class="content-section">
+                    <div class="section-header">
+                        <h2>الخدمات القانونية</h2>
+                        <button class="btn-primary" onclick="showAddServiceModal()">
+                            <i class="fas fa-plus"></i>
+                            <span>إضافة خدمة جديدة</span>
+                        </button>
+                    </div>
+                    <div id="services-cards" class="cards-grid"></div>
+                </section>
+            </div>
+
+            <!-- Add Service Modal -->
+            <div id="add-service-modal" class="modal modal-hidden">
+                <div class="modal-content">
+                    <h3>إضافة خدمة جديدة</h3>
+                    <form id="add-service-form" onsubmit="handleAddService(event)">
+                        <div class="form-group">
+                            <label>عنوان الخدمة</label>
+                            <input type="text" id="service-title" required>
+                        </div>
+                        <div class="form-group">
+                            <label>الأيقونة (Material Symbols)</label>
+                            <input type="text" id="service-icon" placeholder="business_center" required>
+                        </div>
+                        <div class="form-group">
+                            <label>وصف الخدمة</label>
+                            <textarea id="service-description" rows="3" required></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary">إضافة الخدمة</button>
+                            <button type="button" onclick="closeModal('add-service-modal')"
+                                class="btn-secondary">إلغاء</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Add Sub-Service Modal -->
+            <div id="add-subservice-modal" class="modal modal-hidden">
+                <div class="modal-content">
+                    <h3>إضافة خدمة فرعية جديدة</h3>
+                    <form id="add-subservice-form" onsubmit="handleAddSubService(event)">
+                        <input type="hidden" id="parent-service-id">
+                        <div class="form-group">
+                            <label>عنوان الخدمة الفرعية</label>
+                            <input type="text" id="subservice-title" required>
+                        </div>
+                        <div class="form-group">
+                            <label>وصف الخدمة الفرعية</label>
+                            <textarea id="subservice-description" rows="3" required></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary">إضافة الخدمة الفرعية</button>
+                            <button type="button" onclick="closeModal('add-subservice-modal')"
+                                class="btn-secondary">إلغاء</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Posts Page -->
+            <div id="posts-page" class="page-content page-hidden">
+                <section class="content-section">
+                    <div class="section-header">
+                        <h2>المنشورات والأخبار</h2>
+                        <button class="btn-primary" onclick="showAddPublicationModal()">
+                            <i class="fas fa-plus"></i>
+                            <span>إضافة منشور جديد</span>
+                        </button>
+                    </div>
+                    <div id="publications-cards" class="cards-grid"></div>
+                </section>
+            </div>
+
+            <!-- Cases Page -->
+            <div id="cases-page" class="page-content page-hidden">
+                <section class="content-section">
+                    <div class="section-header">
+                        <h2>جدول القضايا</h2>
+                    </div>
+                    <div id="cases-table-container"></div>
+                </section>
+            </div>
+
+            <!-- Administrative Page -->
+            <div id="Administrative-page" class="page-content page-hidden">
+                <section class="content-section">
+                    <div class="section-header">
+                        <h2>الأعمال الإدارية</h2>
+                    </div>
+                    <div id="administrative-table-container"></div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add Publication Modal -->
+    <div id="add-publication-modal" class="modal modal-hidden">
+        <div class="modal-content">
+            <h3>إضافة منشور جديد</h3>
+            <form id="add-publication-form" onsubmit="handleAddPublication(event)">
+                <div class="form-group">
+                    <label>الأيقونة (Material Symbols)</label>
+                    <input type="text" id="publication-icon" placeholder="lightbulb" required>
+                </div>
+                <div class="form-group">
+                    <label>العنوان</label>
+                    <input type="text" id="publication-title" required>
+                </div>
+                <div class="form-group">
+                    <label>الوصف</label>
+                    <textarea id="publication-description" rows="3" required></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">إضافة المنشور</button>
+                    <button type="button" onclick="closeModal('add-publication-modal')"
+                        class="btn-secondary">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- View Publication Detail Modal -->
+    <div id="view-publication-modal" class="modal modal-hidden">
+        <div class="modal-content" style="max-width: 700px; max-height: 80vh; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 id="view-publication-title" style="margin: 0;"></h3>
+                <button type="button" onclick="closeModal('view-publication-modal')"
+                    style="background: none; border: none; color: #ffffff; font-size: 24px; cursor: pointer;">&times;</button>
+            </div>
+            <div id="view-publication-content" style="line-height: 1.6; color: #d1d5db;"></div>
+            <div class="form-actions" style="margin-top: 20px;">
+                <button type="button" id="edit-publication-btn" class="btn-primary">تعديل</button>
+                <button type="button" onclick="closeModal('view-publication-modal')"
+                    class="btn-secondary">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Publication Modal -->
+    <div id="edit-publication-modal" class="modal modal-hidden">
+        <div class="modal-content">
+            <h3>تعديل المنشور</h3>
+            <form id="edit-publication-form" onsubmit="handleEditPublication(event)">
+                <input type="hidden" id="edit-publication-id">
+                <div class="form-group">
+                    <label>الأيقونة (Material Symbols)</label>
+                    <input type="text" id="edit-publication-icon" required>
+                </div>
+                <div class="form-group">
+                    <label>العنوان</label>
+                    <input type="text" id="edit-publication-title" required>
+                </div>
+                <div class="form-group">
+                    <label>الوصف</label>
+                    <textarea id="edit-publication-description" rows="3" required></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">حفظ التغييرات</button>
+                    <button type="button" onclick="closeModal('edit-publication-modal')"
+                        class="btn-secondary">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Card Modal - Services (ما نقوم به) -->
+    <div id="add-card-modal-services" class="modal modal-hidden">
+        <div class="modal-content">
+            <h3>إضافة عمل جديد</h3>
+            <form id="add-card-form-services" onsubmit="handleAddCard(event)">
+                <div class="form-group">
+                    <label>العنوان</label>
+                    <input type="text" id="card-title-services" required>
+                </div>
+                <div class="form-group">
+                    <label>الأيقونة (Material Symbols)</label>
+                    <input type="text" id="card-icon-services" placeholder="business_center" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" id="submit-card-btn-services" class="btn-primary">إضافة</button>
+                    <button type="button" onclick="closeAddCardModal('services')" class="btn-secondary">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Card Modal - Publications (أحدث المنشورات) -->
+    <div id="add-card-modal-publications" class="modal modal-hidden">
+        <div class="modal-content">
+            <h3>إضافة منشور جديد</h3>
+            <form id="add-card-form-publications" onsubmit="handleAddCard(event)">
+                <div class="form-group">
+                    <label>العنوان</label>
+                    <input type="text" id="card-title-publications" required>
+                </div>
+                <div class="form-group">
+                    <label>النص</label>
+                    <textarea id="card-excerpt-publications" required rows="3"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" id="submit-card-btn-publications" class="btn-primary">إضافة</button>
+                    <button type="button" onclick="closeAddCardModal('publications')"
+                        class="btn-secondary">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Card Modal - Testimonials (آراء عملائنا) -->
+    <div id="add-card-modal-testimonials" class="modal modal-hidden">
+        <div class="modal-content">
+            <h3>إضافة رأي عميل</h3>
+            <form id="add-card-form-testimonials" onsubmit="handleAddCard(event)">
+                <div class="form-group">
+                    <label>الرأي/الاقتباس</label>
+                    <textarea id="card-text-testimonials" required rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>اسم العميل</label>
+                    <input type="text" id="card-name-testimonials" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" id="submit-card-btn-testimonials" class="btn-primary">إضافة</button>
+                    <button type="button" onclick="closeAddCardModal('testimonials')"
+                        class="btn-secondary">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Card Modal - Services (ما نقوم به) -->
+    <div id="edit-card-modal-services" class="modal modal-hidden">
+        <div class="modal-content">
+            <h3>تعديل الخدمة</h3>
+            <form id="edit-card-form-services" onsubmit="handleEditCard(event)">
+                <input type="hidden" id="edit-card-id-services">
+                <div class="form-group">
+                    <label>العنوان</label>
+                    <input type="text" id="edit-card-title-services" required>
+                </div>
+                <div class="form-group">
+                    <label>الأيقونة (Material Symbols)</label>
+                    <input type="text" id="edit-card-icon-services" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" id="update-card-btn-services" class="btn-primary">حفظ التغييرات</button>
+                    <button type="button" onclick="closeEditCardModal('services')" class="btn-secondary">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Card Modal - Publications (أحدث المنشورات) -->
+    <div id="edit-card-modal-publications" class="modal modal-hidden">
+        <div class="modal-content">
+            <h3>تعديل المنشور</h3>
+            <form id="edit-card-form-publications" onsubmit="handleEditCard(event)">
+                <input type="hidden" id="edit-card-id-publications">
+                <div class="form-group">
+                    <label>العنوان</label>
+                    <input type="text" id="edit-card-title-publications" required>
+                </div>
+                <div class="form-group">
+                    <label>النص</label>
+                    <textarea id="edit-card-excerpt-publications" required rows="3"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" id="update-card-btn-publications" class="btn-primary">حفظ التغييرات</button>
+                    <button type="button" onclick="closeEditCardModal('publications')"
+                        class="btn-secondary">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Card Modal - Testimonials (آراء عملائنا) -->
+    <div id="edit-card-modal-testimonials" class="modal modal-hidden">
+        <div class="modal-content">
+            <h3>تعديل الرأي</h3>
+            <form id="edit-card-form-testimonials" onsubmit="handleEditCard(event)">
+                <input type="hidden" id="edit-card-id-testimonials">
+                <div class="form-group">
+                    <label>الرأي/الاقتباس</label>
+                    <textarea id="edit-card-text-testimonials" required rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>اسم العميل</label>
+                    <input type="text" id="edit-card-name-testimonials" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" id="update-card-btn-testimonials" class="btn-primary">حفظ التغييرات</button>
+                    <button type="button" onclick="closeEditCardModal('testimonials')"
+                        class="btn-secondary">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-confirm-modal" class="modal modal-hidden">
+        <div class="modal-content">
+            <h3>تأكيد الحذف</h3>
+            <p style="font-size: 16px; margin: 20px 0; text-align: center;">هل أنت متأكد من حذف هذه البطاقة؟</p>
+            <div class="form-actions">
+                <button id="confirm-delete-btn" class="btn-primary" style="background-color: #d20808;">حذف</button>
+                <button id="cancel-delete-btn" class="btn-secondary">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Case Modal -->
+    <div id="add-case-modal" class="modal modal-hidden">
+        <div class="modal-content">
+            <h3>إضافة قضية جديدة</h3>
+            <form id="add-case-form" onsubmit="handleAddCase(event)">
+                <div class="form-group">
+                    <label>اسم العميل</label>
+                    <input type="text" id="case-name" required>
+                </div>
+                <div class="form-group">
+                    <label>البريد الإلكتروني</label>
+                    <input type="email" id="case-email" required>
+                </div>
+                <div class="form-group">
+                    <label>رقم المحضر</label>
+                    <input type="text" id="case-record-number" required>
+                </div>
+                <div class="form-group">
+                    <label>رقم القضية</label>
+                    <input type="text" id="case-number" required>
+                </div>
+                <div class="form-group">
+                    <label>تاريخ الجلسة</label>
+                    <input type="date" id="case-date" required>
+                </div>
+                <div class="form-group">
+                    <label>الحالة</label>
+                    <select id="case-status" required
+                        style="width: 100%; padding: 10px 12px; background-color: #111827; border: 1px solid #374151; color: #ffffff; border-radius: 8px; font-size: 14px;">
+                        <option value="نشطة">نشطة</option>
+                        <option value="معلقة">معلقة</option>
+                        <option value="مغلقة">مغلقة</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">إضافة القضية</button>
+                    <button type="button" onclick="closeModal('add-case-modal')" class="btn-secondary">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- View Case Detail Modal -->
+    <div id="view-case-modal" class="modal modal-hidden">
+        <div class="modal-content" style="max-width: 600px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="margin: 0; color: #f3c623;">تفاصيل القضية</h3>
+                <button type="button" onclick="closeModal('view-case-modal')"
+                    style="background: none; border: none; color: #ffffff; font-size: 24px; cursor: pointer;">&times;</button>
+            </div>
+            <div style="line-height: 1.8; color: #d1d5db;">
+                <div style="margin-bottom: 20px;">
+                    <label style="color: #f3c623; font-weight: 600;">اسم العميل:</label>
+                    <p id="detail-case-name" style="margin: 5px 0 0 0;"></p>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="color: #f3c623; font-weight: 600;">البريد الإلكتروني:</label>
+                    <p id="detail-case-email" style="margin: 5px 0 0 0;"></p>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="color: #f3c623; font-weight: 600;">رقم المحضر:</label>
+                    <p id="detail-case-record-number" style="margin: 5px 0 0 0;"></p>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="color: #f3c623; font-weight: 600;">رقم القضية:</label>
+                    <p id="detail-case-number" style="margin: 5px 0 0 0;"></p>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="color: #f3c623; font-weight: 600;">تاريخ الجلسة:</label>
+                    <p id="detail-case-date" style="margin: 5px 0 0 0;"></p>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="color: #f3c623; font-weight: 600;">الحالة:</label>
+                    <p id="detail-case-status" style="margin: 5px 0 0 0;"></p>
+                </div>
+            </div>
+            <div class="form-actions" style="margin-top: 20px;">
+                <button type="button" id="edit-case-from-detail-btn" class="btn-primary">تعديل</button>
+                <button type="button" onclick="closeModal('view-case-modal')" class="btn-secondary">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Case Modal -->
+    <div id="edit-case-modal" class="modal modal-hidden">
+        <div class="modal-content">
+            <h3>تعديل القضية</h3>
+            <form id="edit-case-form" onsubmit="handleEditCase(event)">
+                <input type="hidden" id="edit-case-id">
+                <div class="form-group">
+                    <label>اسم العميل</label>
+                    <input type="text" id="edit-case-name" required>
+                </div>
+                <div class="form-group">
+                    <label>البريد الإلكتروني</label>
+                    <input type="email" id="edit-case-email" required>
+                </div>
+                <div class="form-group">
+                    <label>رقم المحضر</label>
+                    <input type="text" id="edit-case-record-number" required>
+                </div>
+                <div class="form-group">
+                    <label>رقم القضية</label>
+                    <input type="text" id="edit-case-number" required>
+                </div>
+                <div class="form-group">
+                    <label>تاريخ الجلسة</label>
+                    <input type="date" id="edit-case-date" required>
+                </div>
+                <div class="form-group">
+                    <label>الحالة</label>
+                    <select id="edit-case-status" required
+                        style="width: 100%; padding: 10px 12px; background-color: #111827; border: 1px solid #374151; color: #ffffff; border-radius: 8px; font-size: 14px;">
+                        <option value="نشطة">نشطة</option>
+                        <option value="معلقة">معلقة</option>
+                        <option value="مغلقة">مغلقة</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">حفظ التغييرات</button>
+                    <button type="button" onclick="closeModal('edit-case-modal')" class="btn-secondary">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Case Notes Modal -->
+    <div id="case-notes-modal" class="modal modal-hidden">
+        <div class="modal-content" style="max-width: 600px; display: flex; flex-direction: column;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="margin: 0; color: #f3c623;">الملاحظات</h3>
+                <button type="button" onclick="closeModal('case-notes-modal')"
+                    style="background: none; border: none; color: #ffffff; font-size: 24px; cursor: pointer;">&times;</button>
+            </div>
+            <textarea id="case-notes-text"
+                style="flex: 1; background-color: #111827; border: 1px solid #374151; color: #ffffff; padding: 12px; border-radius: 8px; font-size: 14px; font-family: Cairo, sans-serif; min-height: 300px; resize: vertical;"
+                placeholder="اكتب ملاحظاتك هنا..."></textarea>
+            <div class="form-actions" style="margin-top: 20px;">
+                <button type="button" id="save-notes-btn" class="btn-primary">حفظ الملاحظات</button>
+                <button type="button" onclick="closeModal('case-notes-modal')" class="btn-secondary">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Case Filter Modal -->
+    <div id="case-filter-modal" class="modal modal-hidden">
+        <div class="modal-content">
+            <h3>فلترة القضايا</h3>
+            <form id="case-filter-form" onsubmit="handleCaseFilter(event)">
+                <div class="form-group">
+                    <label>الحالة</label>
+                    <select id="filter-status-select" required
+                        style="width: 100%; padding: 10px 12px; background-color: #111827; border: 1px solid #374151; color: #ffffff; border-radius: 8px; font-size: 14px;">
+                        <option value="all">الكل</option>
+                        <option value="نشطة">نشطة</option>
+                        <option value="معلقة">معلقة</option>
+                        <option value="مغلقة">مغلقة</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">تطبيق الفلترة</button>
+                    <button type="button" onclick="closeCaseFilterModal()" class="btn-secondary">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Administrative Task Modal -->
+    <div id="add-administrative-modal" class="modal modal-hidden">
+        <div class="modal-content">
+            <h3>إضافة عمل إداري جديد</h3>
+            <form id="add-administrative-form" onsubmit="handleAddAdministrative(event)">
+                <div class="form-group">
+                    <label>اسم العمل</label>
+                    <input type="text" id="administrative-name" required>
+                </div>
+                <div class="form-group">
+                    <label>صاحب العمل</label>
+                    <input type="text" id="administrative-owner" required>
+                </div>
+                <div class="form-group">
+                    <label>رقم العمل</label>
+                    <input type="text" id="administrative-number" required>
+                </div>
+                <div class="form-group">
+                    <label>تاريخ الموعد</label>
+                    <input type="date" id="administrative-date" required>
+                </div>
+                <div class="form-group">
+                    <label>الأولوية</label>
+                    <select id="administrative-priority" required
+                        style="width: 100%; padding: 10px 12px; background-color: #111827; border: 1px solid #374151; color: #ffffff; border-radius: 8px; font-size: 14px;">
+                        <option value="عالية">عالية</option>
+                        <option value="متوسطة">متوسطة</option>
+                        <option value="منخفضة">منخفضة</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">إضافة العمل</button>
+                    <button type="button" onclick="closeModal('add-administrative-modal')"
+                        class="btn-secondary">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- View Administrative Task Detail Modal -->
+    <div id="view-administrative-modal" class="modal modal-hidden">
+        <div class="modal-content" style="max-width: 600px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="margin: 0; color: #f3c623;">تفاصيل العمل الإداري</h3>
+                <button type="button" onclick="closeModal('view-administrative-modal')"
+                    style="background: none; border: none; color: #ffffff; font-size: 24px; cursor: pointer;">&times;</button>
+            </div>
+            <div style="line-height: 1.8; color: #d1d5db;">
+                <div style="margin-bottom: 20px;">
+                    <label style="color: #f3c623; font-weight: 600;">اسم العمل:</label>
+                    <p id="detail-administrative-name" style="margin: 5px 0 0 0;"></p>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="color: #f3c623; font-weight: 600;">صاحب العمل:</label>
+                    <p id="detail-administrative-owner" style="margin: 5px 0 0 0;"></p>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="color: #f3c623; font-weight: 600;">رقم العمل:</label>
+                    <p id="detail-administrative-number" style="margin: 5px 0 0 0;"></p>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="color: #f3c623; font-weight: 600;">تاريخ الموعد:</label>
+                    <p id="detail-administrative-date" style="margin: 5px 0 0 0;"></p>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="color: #f3c623; font-weight: 600;">الأولوية:</label>
+                    <p id="detail-administrative-priority" style="margin: 5px 0 0 0;"></p>
+                </div>
+            </div>
+            <div class="form-actions" style="margin-top: 20px;">
+                <button type="button" id="edit-administrative-from-detail-btn" class="btn-primary">تعديل</button>
+                <button type="button" onclick="closeModal('view-administrative-modal')"
+                    class="btn-secondary">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Administrative Task Modal -->
+    <div id="edit-administrative-modal" class="modal modal-hidden">
+        <div class="modal-content">
+            <h3>تعديل العمل الإداري</h3>
+            <form id="edit-administrative-form" onsubmit="handleEditAdministrative(event)">
+                <input type="hidden" id="edit-administrative-id">
+                <div class="form-group">
+                    <label>اسم العمل</label>
+                    <input type="text" id="edit-administrative-name" required>
+                </div>
+                <div class="form-group">
+                    <label>صاحب العمل</label>
+                    <input type="text" id="edit-administrative-owner" required>
+                </div>
+                <div class="form-group">
+                    <label>رقم العمل</label>
+                    <input type="text" id="edit-administrative-number" required>
+                </div>
+                <div class="form-group">
+                    <label>تاريخ الموعد</label>
+                    <input type="date" id="edit-administrative-date" required>
+                </div>
+                <div class="form-group">
+                    <label>الأولوية</label>
+                    <select id="edit-administrative-priority" required
+                        style="width: 100%; padding: 10px 12px; background-color: #111827; border: 1px solid #374151; color: #ffffff; border-radius: 8px; font-size: 14px;">
+                        <option value="عالية">عالية</option>
+                        <option value="متوسطة">متوسطة</option>
+                        <option value="منخفضة">منخفضة</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">حفظ التغييرات</button>
+                    <button type="button" onclick="closeModal('edit-administrative-modal')"
+                        class="btn-secondary">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Administrative Filter Modal -->
+    <div id="administrative-filter-modal" class="modal modal-hidden">
+        <div class="modal-content">
+            <h3>فلترة الأعمال الإدارية</h3>
+            <form id="administrative-filter-form" onsubmit="handleAdministrativeFilter(event)">
+                <div class="form-group">
+                    <label>الأولوية</label>
+                    <select id="filter-priority-select" required
+                        style="width: 100%; padding: 10px 12px; background-color: #111827; border: 1px solid #374151; color: #ffffff; border-radius: 8px; font-size: 14px;">
+                        <option value="all">الكل</option>
+                        <option value="عالية">عالية</option>
+                        <option value="متوسطة">متوسطة</option>
+                        <option value="منخفضة">منخفضة</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">تطبيق الفلترة</button>
+                    <button type="button" onclick="closeAdministrativeFilterModal()"
+                        class="btn-secondary">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="./dashboard.js"></script>
+</body>
+
+</html>

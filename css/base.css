@@ -1,0 +1,188 @@
+/* Dark (Default) Theme */
+:root {
+  --color-bg: #000000;
+  --color-header-bg: #000000;
+  --color-footer-bg: #000000;
+  --color-primary: #f3c623;
+  --color-primary-sec: #ffdf6d;
+  --color-secondary: #ffffff;
+  --color-secondary-links: #ffffffcc;
+  --color-icons: #ffffff;
+  --color-icons-bg: #000000;
+  --color-black: #000000;
+  --shadows: 0px 0px 15px 1px #f3c623;
+  --transition-duration: 0.2s;
+  --padding-right-left: 1.5em;
+}
+
+/* Light Theme */
+:root[data-theme="light"] {
+  --color-bg: #e8eaeb;
+  --color-header-bg: #ffffff;
+  --color-footer-bg: #061f37;
+  --color-primary: #061f37;
+  --color-primary-sec: #061f37cc;
+  --color-secondary: #000000;
+  --color-secondary-links: #ffffffcc;
+  --color-icons: #061f37;
+  --color-icons-bg: #e7e8ec;
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --shadows: 0px 0px 15px 1px #e8eaeb;
+  --transition-duration: 0.2s;
+  --padding-right-left: 1.5em;
+}
+
+/* Base Styles */
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Cairo", sans-serif;
+  background-color: var(--color-bg);
+  margin: 0;
+  transition: background-color var(--transition-duration) ease,
+    color var(--transition-duration) ease;
+}
+
+/* Theme transition */
+.theme-transition * {
+  transition: background-color var(--transition-duration) ease,
+    color var(--transition-duration) ease,
+    border-color var(--transition-duration) ease,
+    box-shadow var(--transition-duration) ease !important;
+}
+
+button {
+  font-family: "Cairo", sans-serif;
+}
+
+input, textarea {
+  font-family: "Cairo", sans-serif;
+}
+
+/* Layout */
+.relative {
+  position: relative;
+}
+.flex {
+  display: flex;
+}
+.min-h-screen {
+  min-height: 100vh;
+}
+.w-full {
+  width: 100%;
+}
+.flex-col {
+  flex-direction: column;
+}
+.overflow-x-hidden {
+  overflow-x: hidden;
+}
+
+.div-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 3em;
+}
+
+a {
+  text-decoration: none;
+}
+
+.cta-button {
+  display: flex;
+  min-width: 120px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  border: none;
+  height: 2.5rem;
+  padding: 0 1rem;
+  background-color: var(--color-primary);
+  color: var(--color-black);
+  font-size: 0.875rem;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+
+/* Light mode button text color */
+:root[data-theme="light"] .cta-button {
+  color: var(--color-white);
+}
+
+/* Scroll to Top Button */
+.back-to-top {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: var(--color-primary);
+  height: 0px;
+  width: 0px;
+  overflow: hidden;
+  border-radius: 50px;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  color: transparent;
+  clear: both;
+  visibility: hidden;
+  position: fixed;
+  cursor: pointer;
+  display: block;
+  border: none;
+  right: 30px;
+  bottom: 30px;
+  font-size: 0px;
+  outline: 0 !important;
+  z-index: 99;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 0px 15px 1px var(--color-primary);
+}
+
+.back-to-top:hover,
+.back-to-top:active,
+.back-to-top:focus {
+  outline: 0 !important;
+}
+
+/* Remove CSS arrow creation - using Font Awesome icon instead */
+
+.back-to-top.show {
+  display: block;
+  background: var(--color-primary);
+  color: var(--color-secondary);
+  font-size: 25px;
+  right: 30px;
+  bottom: 30px;
+  height: 50px;
+  width: 50px;
+  visibility: visible;
+  box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+  -webkit-box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+}
+
+.back-to-top.show:active {
+  box-shadow: 0px 4px 8px 2px rgba(0, 0, 0, 0.25);
+  -webkit-box-shadow: 0px 4px 8px 2px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0px 4px 8px 2px rgba(0, 0, 0, 0.25);
+}
+
+/* Light theme adjustments for scroll to top button */
+:root[data-theme="light"] .back-to-top {
+  background: var(--color-primary);
+  box-shadow: 0px 0px 15px 1px var(--color-primary);
+}
+
+:root[data-theme="light"] .back-to-top.show {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
