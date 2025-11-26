@@ -75,7 +75,8 @@
                     نقدّم حلولًا قانونية دقيقة ومبتكرة تخدم عملاءنا في القضايا المدنية والتجارية والاستثمارية وتأسيس
                     الشركات وصياغة العقود مع فريق كامل من المتخصصين.
                 </p>
-                <h2 class="whatsapp-title">انقر للتواصل مباشرة مع أحد أعضاء فريقنا</h2>
+                <h2 id="whatsapp-contacts" class="whatsapp-title">انقر للتواصل مباشرة مع أحد أعضاء فريقنا عبر واتساب
+                </h2>
                 <div class="whatsapp-contacts">
                     <div class="whatsapp-contact" data-phone="201008902330">
                         <img src="../img/Ahmed-Alghubashi.jpg" alt="Photo" class="contact-photo">
@@ -144,35 +145,44 @@
                     <div class="contact-info">
                         <h3>بيانات الاتصال</h3>
                         <div class="info-list">
-                            <div class="info-item">
-                                <div class="location">
-                                    <span class="material-symbols-outlined icon">location_on</span>
-                                    <span>
-                                        السعودية<br />
-                                        الرياض - الطائف - جدة
-                                    </span>
-                                </div>
-                                <div class="location">
-                                    <span class="material-symbols-outlined icon">location_on</span>
-                                    <span>
-                                        مصر<br />
-                                        القاهرة - مدينة السادات - الإسكندرية
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="info-item">
-                                <div class="phone">
-                                    <span class="material-symbols-outlined icon">call</span>
-                                    <a href="tel:+966 54 171 3058" dir="ltr">+966 54 171 3058</a>
-                                </div>
-                                <div class="phone">
-                                    <span class="material-symbols-outlined icon">call</span>
-                                    <a href="tel:+20 100 890 2330" dir="ltr">+20 100 890 2330</a>
+                            <div class="info-container">
+                                <h4>مقر المؤسسة</h4>
+                                <div class="info-item">
+                                    <div class="location">
+                                        <span class="material-symbols-outlined icon">location_on</span>
+                                        <span>
+                                            السعودية<br />
+                                            الرياض - الطائف - جدة
+                                        </span>
+                                    </div>
+                                    <div class="location">
+                                        <span class="material-symbols-outlined icon">location_on</span>
+                                        <span>
+                                            مصر<br />
+                                            القاهرة - مدينة السادات - الإسكندرية
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="info-item email">
-                                <span class="material-symbols-outlined icon">email</span>
-                                <a href="mailto:mwsstaldl@gmail.com">mwsstaldl@gmail.com</a>
+                            <div class="info-container">
+                                <h4>الخط الساخن</h4>
+                                <div class="info-item">
+                                    <div class="phone">
+                                        <span class="material-symbols-outlined icon">call</span>
+                                        <a href="tel:+966 54 171 3058" dir="ltr">+966 54 171 3058</a>
+                                    </div>
+                                    <div class="phone">
+                                        <span class="material-symbols-outlined icon">call</span>
+                                        <a href="tel:+20 100 890 2330" dir="ltr">+20 100 890 2330</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="info-container">
+                                <h4>البريد الإلكتروني</h4>
+                                <div class="info-item email">
+                                    <span class="material-symbols-outlined icon">email</span>
+                                    <a href="mailto:mwsstaldl@gmail.com">mwsstaldl@gmail.com</a>
+                                </div>
                             </div>
                         </div>
 
@@ -215,7 +225,7 @@
                         <div class="footer-section">
                             <h3>تواصل معنا</h3>
                             <div class="social-links">
-                                <a href="#" class="whatsapp-open-modal" data-whatsapp-modal>
+                                <a href="#whatsapp-contacts">
                                     <i class="fa-brands fa-whatsapp"></i>
                                 </a>
                                 <a href="mailto:mwsstaldl@gmail.com">
@@ -257,60 +267,12 @@
             <i class="fa-solid fa-chevron-up"></i>
         </button>
 
-        <!-- WhatsApp Modal -->
-        <div id="whatsapp-modal" class="whatsapp-modal">
-            <div class="whatsapp-modal-content">
-                <button class="whatsapp-modal-close" aria-label="إغلاق">
-                    <i class="fa-solid fa-times"></i>
-                </button>
-                <div class="whatsapp-modal-header">
-                    <h3>اختر رقم واتساب</h3>
-                    <p>اختر الرقم الذي تريد التواصل عبره</p>
-                </div>
-                <div class="whatsapp-options">
-                    <a href="#" class="whatsapp-option"
-                        data-whatsapp-url="https://api.whatsapp.com/send/?phone=201108844909&type=phone_number&app_absent=0">
-                        <div class="whatsapp-option-icon">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </div>
-                        <div class="whatsapp-option-content">
-                            <div class="whatsapp-option-name">واتساب مصر</div>
-                            <div class="whatsapp-option-number">+20 110 884 4909</div>
-                        </div>
-                        <i class="fa-solid fa-chevron-left whatsapp-option-arrow"></i>
-                    </a>
-                    <a href="#" class="whatsapp-option"
-                        data-whatsapp-url="https://api.whatsapp.com/send/?phone=201008902330&type=phone_number&app_absent=0">
-                        <div class="whatsapp-option-icon">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </div>
-                        <div class="whatsapp-option-content">
-                            <div class="whatsapp-option-name">واتساب مصر</div>
-                            <div class="whatsapp-option-number">+20 100 890 2330</div>
-                        </div>
-                        <i class="fa-solid fa-chevron-left whatsapp-option-arrow"></i>
-                    </a>
-                    <a href="#" class="whatsapp-option"
-                        data-whatsapp-url="https://api.whatsapp.com/send/?phone=966541713058&type=phone_number&app_absent=0">
-                        <div class="whatsapp-option-icon">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </div>
-                        <div class="whatsapp-option-content">
-                            <div class="whatsapp-option-name">واتساب السعودية</div>
-                            <div class="whatsapp-option-number">+966 541 713 058</div>
-                        </div>
-                        <i class="fa-solid fa-chevron-left whatsapp-option-arrow"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Custom JavaScript -->
     <script src="../js/main.js"></script>
     <script src="./contact.js"></script>
     <script src="../js/animations.js"></script>
-    <script src="../js/whatsapp-modal.js"></script>
 </body>
 
 </html>
