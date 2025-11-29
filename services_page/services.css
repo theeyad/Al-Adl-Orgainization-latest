@@ -311,6 +311,16 @@ main {
   gap: 0.75rem;
 }
 
+.learn-more-link[data-subservice-id] {
+  justify-content: space-between;
+}
+
+.learn-more-link .book {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
 .learn-more-link .arrow-icon {
   transition: transform var(--transition-duration);
   -webkit-transition: transform var(--transition-duration);
