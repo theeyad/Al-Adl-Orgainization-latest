@@ -63,7 +63,7 @@ if (loginForm) {
       localStorage.setItem('username', username);
       
       // Redirect to home page
-      window.location.href = '../home_page/home.html';
+      window.location.href = './home_page/home.html';
     }, 1500);
   });
 }
@@ -118,7 +118,7 @@ if (signupForm) {
       localStorage.setItem('userCountry', country);
       
       // Redirect to home page
-      window.location.href = '../home_page/home.html';
+      window.location.href = './home_page/home.html';
     }, 1500);
   });
 }
