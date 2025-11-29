@@ -77,10 +77,11 @@ if (signupForm) {
     const email = document.getElementById("signup-email").value;
     const country = document.getElementById("whatsapp-country").value;
     const whatsapp = document.getElementById("signup-whatsapp").value;
+    const username = document.getElementById("signup-username").value;
     const password = document.getElementById("signup-password").value;
 
     // Validate
-    if (!name || !email || !country || !whatsapp || !password) {
+    if (!name || !email || !country || !whatsapp || !username || !password) {
       showAlert("يرجى ملء جميع الحقول", "error");
       return;
     }
@@ -116,6 +117,7 @@ if (signupForm) {
       localStorage.setItem("userEmail", email);
       localStorage.setItem("userPhone", fullPhone);
       localStorage.setItem("userCountry", country);
+      localStorage.setItem("username", username);
 
       // Redirect to home page
       window.location.href = "./home_page/home.html";

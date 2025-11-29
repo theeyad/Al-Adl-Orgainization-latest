@@ -115,29 +115,18 @@
                 <div class="grid-container">
                     <div id="contact-form" class="contact-form">
                         <div class="form-header">
-                            <h2>أو احجز استشارتك إلكترونيًا.</h2>
+                            <h2>احجز استشارتك إلكترونيًا</h2>
                             <p>احجز استشاراتك وخدماتك من خلال نظام إلكتروني متكامل لخدمة سريعة وآلية.</p>
                         </div>
-                        <form id="form" method="POST" action="https://api.web3forms.com/submit">
-                            <input type="hidden" name="access_key" value="0e359616-45ed-496a-a3f2-4ec1357fa9be">
-                            <input type="hidden" name="subject" value="رسالة جديدة من موقع مؤسسة العدل">
+                        <form id="form">
                             <div class="form-group">
-                                <label class="form-label" for="name">الاسم الكامل</label>
-                                <input type="text" id="name" name="name" class="form-input" placeholder="الاسم الكامل"
-                                    required />
+                                <label class="form-label">الاستشارة المختارة</label>
+                                <div class="selected-service-display" id="selectedServiceDisplay">
+                                    <p style="color: var(--color-secondary-links); margin: 0;">لم يتم اختيار استشارة</p>
+                                </div>
                             </div>
                             <div class="form-group">
-                                <label class="form-label" for="email">البريد الإلكتروني</label>
-                                <input type="email" id="email" name="email" class="form-input"
-                                    placeholder="البريد الإلكتروني" required />
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" for="message">الرسالة</label>
-                                <textarea id="message" name="message" class="form-textarea" rows="5"
-                                    placeholder="الرسالة" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="submit-button">أرسل الرسالة</button>
+                                <button type="submit" class="submit-button">احجز استشارتك</button>
                             </div>
                         </form>
                     </div>
@@ -185,14 +174,13 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="map-container">
-                            <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d464820.6142317064!2d46.544819211140385!3d24.725555344546843!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e2f03890d489399%3A0xba974d1c98e79fd5!2sRiyadh%20Saudi%20Arabia!5e0!3m2!1sen!2sus!4v1696599814133!5m2!1sar!2ssa"
-                                loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen="">
-                            </iframe>
-                        </div>
                     </div>
+                </div>
+                <div class="map-container">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d464820.6142317064!2d46.544819211140385!3d24.725555344546843!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e2f03890d489399%3A0xba974d1c98e79fd5!2sRiyadh%20Saudi%20Arabia!5e0!3m2!1sen!2sus!4v1696599814133!5m2!1sar!2ssa"
+                        loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen="">
+                    </iframe>
                 </div>
             </div>
         </main>

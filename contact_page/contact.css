@@ -235,8 +235,8 @@ main {
 
 .form-label {
   display: block;
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: bold;
+  font-size: 1rem;
   margin-bottom: 0.5rem;
   color: var(--color-black);
 }
@@ -446,4 +446,121 @@ main {
 /* Material Icons */
 .material-symbols-outlined {
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+/* Selected Service Display */
+.selected-service-display {
+  background-color: var(--color-icons-bg);
+  border: 1px solid var(--color-icons-bg);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+}
+
+.selected-service-display.active {
+  border-color: var(--color-primary);
+}
+
+.selected-service-display .service-name {
+  font-weight: 600;
+  color: var(--color-primary);
+  margin: 0;
+}
+
+.selected-service-display .service-price {
+  font-size: 0.9rem;
+  color: var(--color-secondary-links);
+  margin-top: 0.25rem;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal-content {
+  background-color: var(--color-header-bg);
+  border: 2px solid var(--color-primary);
+  border-radius: 0.75rem;
+  padding: 2rem;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  animation: slideInModal 0.3s ease-out;
+}
+
+@keyframes slideInModal {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-content h3 {
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+.modal-content p {
+  color: var(--color-secondary);
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.modal-button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Cairo", sans-serif;
+}
+
+.modal-button.confirm {
+  background-color: var(--color-primary);
+  color: var(--color-black);
+}
+
+.modal-button.confirm:hover {
+  background-color: var(--color-primary-sec);
+  transform: translateY(-2px);
+}
+
+.modal-button.cancel {
+  background-color: transparent;
+  color: var(--color-secondary);
+  border: 1px solid var(--color-secondary-links);
+}
+
+.modal-button.cancel:hover {
+  color: var(--color-primary);
 }

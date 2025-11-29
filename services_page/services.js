@@ -1543,8 +1543,22 @@ document.addEventListener("DOMContentLoaded", function () {
           );
 
           if (subService) {
-            // Redirect to contact page for consultation booking
-            window.location.href = "../contact_page/contact.html#contact-form";
+            // Call booking function from contact.js
+            if (window.bookService) {
+              window.bookService(
+                subServiceId,
+                subService.title,
+                subService.price,
+                parentServiceId
+              );
+            } else {
+              // Fallback if bookService is not loaded
+              window.location.href = `../contact_page/contact.html?service=${subServiceId}&name=${encodeURIComponent(
+                subService.title
+              )}&price=${encodeURIComponent(
+                subService.price
+              )}&parent=${parentServiceId}#contact-form`;
+            }
           }
         });
       });
