@@ -1,21 +1,10 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar">
+<html lang="ar" dir="rtl">
 
 <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مؤسسة العدل</title>
-
-    <!-- Font Awsome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <!-- service icons -->
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?display=swap&family=Work+Sans:wght@400;500;700;900" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <title>تسجيل دخول / إنشاء حساب - مؤسسة العدل</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,228 +15,106 @@
     <link rel="shortcut icon" href="./img/logo1.png" type="image/png">
 
     <!-- Styles -->
-    <link href="./css/style.css" rel="stylesheet" />
+    <link href="./users_login_signup/users_log_sign.css" rel="stylesheet" />
     <link href="./css/base.css" rel="stylesheet" />
-    <link href="./css/header.css" rel="stylesheet">
-    <link href="./css/footer.css" rel="stylesheet">
+
 </head>
 
 <body>
-    <div class="relative flex min-h-screen w-full flex-col font-display group/design-root overflow-x-hidden">
-        <div class="layout-container flex h-full grow flex-col">
-
-            <header>
-                <div class="container">
-                    <div class="header-content">
-                        <div class="logo-container">
-                            <a href="./index.html"><img class="logo-image" src="./img/logo.png"
-                                    alt="Al-Adl Foundation Logo" /></a>
-                            <h2 class="logo-text"><span class="logo-line-1">مؤسسة العدل للمحاماة</span> <span
-                                    class="logo-line-2">والاستشارات القانونية</span></h2>
-                        </div>
-                        <nav>
-                            <a href="./index.html">الصفحة الرئيسية</a>
-                            <a href="./services_page/services.html">خدمات قانونية</a>
-                            <a href="./publications_page/publications.html">منشورات</a>
-                            <a href="./contact_page/contact.html">تواصل</a>
-                            <button class="cta-button"
-                                onclick="window.location.href='./contact_page/contact.html#contact-form'">
-                                <span class="truncate">احجز استشارة</span>
-                            </button>
-                        </nav>
-                        <div class="header-controls">
-                            <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle theme">
-                                <i class="fa-solid fa-moon"></i>
-                            </button>
-                            <div class="mobile-menu-button">
-                                <div class="toggle" aria-label="Toggle menu">
-                                    <span></span>
-                                </div>
-                            </div>
+    <div class="container">
+        <div class="logo-container">
+            <div class="logo">
+                <img src="./img/logo.png" alt="رمز المؤسسة">
+            </div>
+            <h1 class="company-name">مؤسسة العدل للمحاماة والاستشارات القانونية</h1>
+            <p class="page-title" id="pageTitle">إنشاء حساب أو تسجيل الدخول</p>
+        </div>
+        <div class="login-card">
+            <!-- Login Form -->
+            <div class="form-container active" id="login-form">
+                <form id="login-auth-form">
+                    <div class="form-group">
+                        <label for="login-username">اسم المستخدم</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="login-username" name="username" placeholder="أدخل اسم المستخدم"
+                                required>
                         </div>
                     </div>
-                </div>
-            </header>
-
-            <main class="flex-1">
-                <div class="hero-section">
-                    <div class="hero-content">
-                        <h1 class="hero-title">مؤسسة العدل للمحاماة والاستشارات القانونية</h1>
-                        <p class="hero-description">خبرة تثق بها وعدالة نحميها</p>
-                        <button class="cta-button"
-                            onclick="window.location.href='./contact_page/contact.html#contact-form'">
-                            <span class="truncate">احجز استشارة</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="services-section">
-                    <div class="container">
-                        <div class="section-header">
-                            <h2 class="section-title">ما نقوم به</h2>
-                            <p class="section-description">نقدم مجموعة من الخدمات القانونية المتخصصة</p>
-                        </div>
-                        <div class="services-grid">
-                            <div class="service-card">
-                                <span class="material-symbols-outlined service-icon">business_center</span>
-                                <h3 class="service-title">خدمات الشركات</h3>
-                            </div>
-                            <div class="service-card">
-                                <span class="material-symbols-outlined service-icon">monetization_on</span>
-                                <h3 class="service-title">خدمات المستثمرين والأجانب </h3>
-                            </div>
-                            <div class="service-card">
-                                <span class="material-symbols-outlined service-icon">factory</span>
-                                <h3 class="service-title">خدمات القطاع الصناعي</h3>
-                            </div>
-                        </div>
-                        <div class="text-center mt-12 div-buttons">
-                            <button class="cta-button mx-auto"
-                                onclick="window.location.href='./services_page/services.html'">
-                                <span class="truncate">جميع الخدمات</span>
-                            </button>
+                    <div class="form-group">
+                        <label for="login-password">كلمة المرور</label>
+                        <div class="input-wrapper">
+                            <input type="password" id="login-password" name="password" placeholder="أدخل كلمة المرور"
+                                required>
                         </div>
                     </div>
+                    <button type="submit" class="submit-button">
+                        <span class="button-text">دخول</span>
+                    </button>
+                </form>
+                <div class="toggle-form">
+                    <p>ليس لديك حساب؟ <a href="#" class="toggle-link" onclick="switchToSignup(event)">إنشاء حساب
+                            جديد</a></p>
                 </div>
+                <div class="to-admin-log">
+                    <p>عضو بالمؤسسة؟ <a href="./login_page/login.html" class="toggle-link">تسجيل دخول</a>
+                    </p>
+                </div>
+            </div>
 
-                <div class="publications-section">
-                    <div class="container">
-                        <div class="section-header">
-                            <h2 class="section-title">أحدث المنشورات</h2>
-                            <p class="section-description">مقالات ورؤى قانونية حديثة</p>
-                        </div>
-                        <div class="publications-grid">
-                            <div class="publication-card">
-                                <h3 class="publication-title">أهمية العقود التجارية</h3>
-                                <p class="publication-excerpt">نظرة على كيفية حماية العقود التجارية لمصالح الشركات...
-                                </p>
-                            </div>
-                            <div class="publication-card">
-                                <h3 class="publication-title">قانون العمل الجديد</h3>
-                                <p class="publication-excerpt">تحليل للتعديلات الأخيرة في قانون العمل وتأثيرها...</p>
-                            </div>
-                            <div class="publication-card">
-                                <h3 class="publication-title">حماية الملكية الفكرية</h3>
-                                <p class="publication-excerpt">خطوات أساسية لتسجيل وحماية علامتك التجارية...</p>
-                            </div>
-                        </div>
-                        <div class="text-center mt-12 div-buttons">
-                            <button class="cta-button mx-auto"
-                                onclick="window.location.href='./publications_page/publications.html'">
-                                <span class="truncate">جميع المنشورات</span>
-                            </button>
+            <!-- Signup Form -->
+            <div class="form-container" id="signup-form">
+                <form id="signup-auth-form">
+                    <div class="form-group">
+                        <label for="signup-name">الاسم الكامل</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="signup-name" name="name" placeholder="أدخل الاسم الكامل" required>
                         </div>
                     </div>
-                </div>
-
-                <div class="testimonials-section">
-                    <div class="container">
-                        <div class="section-header">
-                            <h2 class="section-title">آراء عملائنا</h2>
-                            <p class="section-description">شهادات نعتز بها من عملائنا</p>
-                        </div>
-                        <div class="testimonials-grid">
-                            <div class="testimonial-card">
-                                <p class="testimonial-text">
-                                    لقد ساعدوني كثيراً بخبرتهم الواسعة. كانوا متعاونين للغاية وقدموا لي أفضل الحلول.</p>
-                                <div class="testimonial-author">
-                                    <p class="author-name">إياد عثمان</p>
-                                </div>
-                            </div>
-                            <div class="testimonial-card">
-                                <p class="testimonial-text">
-                                    تجربة ممتازة! شكراً علي مجهودكم.</p>
-                                <div class="testimonial-author">
-                                    <p class="author-name">عبد الله هشام</p>
-                                </div>
-                            </div>
-                            <div class="testimonial-card">
-                                <p class="testimonial-text">خدمات ممتازة واهتمام
-                                    بالتفاصيل. أنصح بهم بشدة.</p>
-                                <div class="testimonial-author">
-                                    <p class="author-name">أحمد حسن</p>
-                                </div>
-                            </div>
+                    <div class="form-group">
+                        <label for="signup-email">البريد الإلكتروني</label>
+                        <div class="input-wrapper">
+                            <input type="email" id="signup-email" name="email" placeholder="أدخل البريد الإلكتروني"
+                                required>
                         </div>
                     </div>
-                </div>
-            </main>
-
-            <footer>
-                <div class="container">
-                    <div class="footer-content">
-                        <div class="footer-grid">
-                            <div class="footer-brand">
-                                <div class="footer-logo">
-                                    <img src="./img/logo.png" alt="Al-Adl Foundation Logo" />
-                                    <h2>مؤسسة العدل</h2>
-                                </div>
-                                <p class="lawyer-name">
-                                    <a href="./login_page/login.html">المستشار القانوني أحمد إسماعيل الغباشي</a>
-                                </p>
-                                <p class="footer-description">مؤسسة قانونية متخصصة في تقديم الاستشارات والخدمات
-                                    القانونية بأعلى
-                                    معايير الجودة والاحترافية.</p>
-                            </div>
-                            <div class="footer-section">
-                                <h3>روابط سريعة</h3>
-                                <nav class="footer-nav">
-                                    <a href="./index.html">الصفحة الرئيسية</a>
-                                    <a href="./services_page/services.html">خدمات قانونية</a>
-                                    <a href="./publications_page/publications.html">منشورات</a>
-                                    <a href="./contact_page/contact.html">تواصل</a>
-                                </nav>
-                            </div>
-                            <div class="footer-section">
-                                <h3>تواصل معنا</h3>
-                                <div class="social-links">
-                                    <a href="./contact_page/contact.html#whatsapp-contacts">
-                                        <i class="fa-brands fa-whatsapp"></i>
-                                    </a>
-                                    <a href="mailto:mwsstaldl@gmail.com">
-                                        <i class="fab fa-google"></i>
-                                    </a>
-                                    <a href="https://www.facebook.com/profile.php?id=61560478169026&locale=ar_AR"
-                                        target="_blank" rel="noopener noreferrer">
-                                        <i class="fa-brands fa-facebook-f"></i>
-                                    </a>
-                                    <a href="https://www.linkedin.com/in/%D9%85%D8%A4%D8%B3%D8%B3%D8%A9-%D8%A7%D9%84%D8%B9%D8%AF%D9%84-%D9%84%D9%84%D9%85%D8%AD%D8%A7%D9%85%D8%A7%D8%A9-%D9%88%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A7%D8%AA-%D8%A7%D9%84%D9%82%D8%A7%D9%86%D9%88%D9%86%D9%8A%D8%A9-74328938a/"
-                                        target="_blank" rel="noopener noreferrer">
-                                        <i class="fa-brands fa-linkedin"></i>
-                                    </a>
-                                    <a href="https://www.snapchat.com/@mwssldlllmhmwls?share_id=WHI8Yn7YPUU&locale=ar-EG"
-                                        target="_blank" rel="noopener noreferrer">
-                                        <i class="fab fa-snapchat"></i>
-                                    </a>
-                                    <a href="https://www.instagram.com/p/DQhwFBWDd9f/?igsh=MWJvaW43cnQycDB2YQ=="
-                                        target="_blank" rel="noopener noreferrer">
-                                        <i class="fa-brands fa-instagram"></i>
-                                    </a>
-                                    <a href="https://x.com/al_dl19331?t=8ywJqZpaubq-ogDm_eBI_Q&s=09" target="_blank"
-                                        rel="noopener noreferrer">
-                                        <i class="fa-brands fa-x-twitter"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="footer-bottom">
-                            <p>©<span class="copyright-year">2025</span> مؤسسة العدل للمحاماة والاستشارات القانونية.
-                                جميع الحقوق محفوظة.</p>
+                    <div class="form-group">
+                        <label for="whatsapp-country">رقم واتساب (اختر الدولة أولاً)</label>
+                        <div class="input-wrapper">
+                            <select id="whatsapp-country" name="whatsapp_country" required>
+                                <option value="">-- اختر الدولة --</option>
+                                <option value="egypt">مصر (+20)</option>
+                                <option value="saudi">السعودية (+966)</option>
+                            </select>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="signup-whatsapp">رقم واتساب</label>
+                        <div class="phone-input-wrapper">
+                            <span class="phone-prefix" id="phone-prefix">+20</span>
+                            <input type="tel" id="signup-whatsapp" name="whatsapp" placeholder="أدخل الرقم" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">كلمة المرور</label>
+                        <div class="input-wrapper">
+                            <input type="password" id="signup-password" name="password" placeholder="أدخل كلمة المرور"
+                                required>
+                        </div>
+                    </div>
+                    <button type="submit" class="submit-button">
+                        <span class="button-text">إنشاء حساب</span>
+                    </button>
+                </form>
+                <div class="toggle-form">
+                    <p>لديك حساب بالفعل؟ <a href="#" class="toggle-link" onclick="switchToLogin(event)">تسجيل دخول</a>
+                    </p>
                 </div>
-            </footer>
-
-            <!-- Scroll to Top Button -->
-            <button class="back-to-top" type="button" aria-label="Scroll to top">
-                <i class="fa-solid fa-chevron-up"></i>
-            </button>
-
+            </div>
         </div>
     </div>
 
-    <script src="./js/main.js"></script>
-    <script src="./js/animations.js"></script>
+    <script src="./users_login_signup/users_log_sign.js"></script>
+
 </body>
 
 </html>

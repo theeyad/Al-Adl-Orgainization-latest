@@ -50,8 +50,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Check if the link matches the current page
     if (
       linkPath === currentPage ||
-      (currentPage === "" && linkPath === "index.html") ||
-      (currentPage === "" && linkPath === "./index.html")
+      (currentPage === "" && linkPath === "home.html") ||
+      (currentPage === "" && linkPath === "./home.html")
     ) {
       link.classList.add("active");
     }

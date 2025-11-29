@@ -99,6 +99,10 @@ footer {
   color: var(--color-primary);
 }
 
+:root[data-theme="light"] .footer-brand .lawyer-name {
+  color: #ffffff;
+}
+
 .footer-brand .lawyer-name a {
   color: var(--color-primary);
 }
@@ -248,7 +252,7 @@ footer {
 
 .footer-bottom p {
   font-size: 0.875rem;
-  color: var(--color-secondary);
+  color: var(--color-primary);
 }
 
 /* Light mode footer bottom text */
