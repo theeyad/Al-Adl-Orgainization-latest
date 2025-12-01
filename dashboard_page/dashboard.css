@@ -1006,7 +1006,12 @@ body {
 
 .cases-table td {
   padding: 16px;
-  vertical-align: middle;
+  text-align: right;
+}
+
+.cases-table .action-buttons {
+  display: flex;
+  gap: 8px;
 }
 
 .table-cell-user {

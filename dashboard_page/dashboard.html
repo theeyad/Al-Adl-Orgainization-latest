@@ -57,6 +57,10 @@
                 <i class="fas fa-address-book"></i>
                 <span>التواصل</span>
             </a>
+            <a class="nav-item" data-page="consultations">
+                <i class="fas fa-calendar-check"></i>
+                <span>المواعيد والاستشارات</span>
+            </a>
             <a class="nav-item" data-page="cases">
                 <i class="fas fa-gavel"></i>
                 <span>جدول القضايا</span>
@@ -267,6 +271,16 @@
                         </div>
                         <div id="email-display" class="email-display"></div>
                     </div>
+                </section>
+            </div>
+
+            <!-- Consultations Page -->
+            <div id="consultations-page" class="page-content page-hidden">
+                <div class="section-header">
+                    <h2>المواعيد والاستشارات</h2>
+                </div>
+                <section class="content-section">
+                    <div id="consultations-table-container"></div>
                 </section>
             </div>
 
@@ -999,7 +1013,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Delete Phone Confirmation Modal -->
     <div id="delete-phone-modal" class="modal modal-hidden">
         <div class="modal-content">
@@ -1013,6 +1027,80 @@
                     <span>حذف</span>
                 </button>
                 <button type="button" onclick="closeModal('delete-phone-modal')" class="btn-secondary">
+                    إلغاء
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Consultation Details Modal -->
+    <div id="view-consultation-modal" class="modal modal-hidden">
+        <div class="modal-content">
+            <h3>تفاصيل الاستشارة</h3>
+            <div class="form-group">
+                <label>اسم العميل</label>
+                <p id="detail-consultation-name" style="color: #d1d5db;"></p>
+            </div>
+            <div class="form-group">
+                <label>البريد الإلكتروني</label>
+                <p id="detail-consultation-email" style="color: #d1d5db;"></p>
+            </div>
+            <div class="form-group">
+                <label>رقم الواتساب</label>
+                <p id="detail-consultation-phone" style="color: #d1d5db; text-align: right;" dir="ltr"></p>
+            </div>
+            <div class="form-group">
+                <label>الاستشارة المختارة</label>
+                <p id="detail-consultation-service" style="color: #d1d5db;"></p>
+            </div>
+            <div class="form-group">
+                <label>تاريخ الحجز</label>
+                <p id="detail-consultation-date" style="color: #d1d5db;"></p>
+            </div>
+            <div class="form-group">
+                <label>الملاحظات</label>
+                <p id="detail-consultation-notes" style="color: #d1d5db;"></p>
+            </div>
+            <div class="form-actions">
+                <button type="button" onclick="closeModal('view-consultation-modal')" class="btn-secondary">
+                    إغلاق
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Edit Consultation Notes Modal -->
+    <div id="edit-consultation-notes-modal" class="modal modal-hidden">
+        <div class="modal-content">
+            <h3>تعديل الملاحظات</h3>
+            <form id="edit-consultation-notes-form" onsubmit="handleEditConsultationNotes(event)">
+                <input type="hidden" id="edit-consultation-id">
+                <div class="form-group">
+                    <label>الملاحظات</label>
+                    <textarea id="consultation-notes-text" rows="6"
+                        style="width: 100%; background-color: #111827; border: 1px solid #374151; color: #ffffff; padding: 10px; border-radius: 8px;"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">حفظ</button>
+                    <button type="button" onclick="closeModal('edit-consultation-notes-modal')" class="btn-secondary">
+                        إلغاء
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Delete Consultation Confirmation Modal -->
+    <div id="delete-consultation-modal" class="modal modal-hidden">
+        <div class="modal-content">
+            <h3>تأكيد الحذف</h3>
+            <p style="color: #d1d5db; margin: 20px 0; text-align: center;">
+                هل أنت متأكد من حذف هذه الاستشارة؟
+            </p>
+            <div class="form-actions">
+                <button class="btn-primary" style="background: #ef4444;" id="confirm-delete-consultation-btn">
+                    <i class="fas fa-trash"></i>
+                    <span>حذف</span>
+                </button>
+                <button type="button" onclick="closeModal('delete-consultation-modal')" class="btn-secondary">
                     إلغاء
                 </button>
             </div>

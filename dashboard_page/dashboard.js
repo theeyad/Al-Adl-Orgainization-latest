@@ -1006,12 +1006,236 @@ document.addEventListener("DOMContentLoaded", () => {
     ?.addEventListener("click", renderPublications);
 });
 
+// ==================== Consultations Management ====================
 
-
-
-
-
-
+// Global storage for consultations
+let consultations = [];
+let filteredConsultations = [];
+let consultationFilter = {
+  searchTerm: "",
+  service: null
+};
+let consultationToDelete = null;
+// Load consultations from localStorage
+function loadConsultations() {
+  const stored = localStorage.getItem('consultations');
+  consultations = stored ? JSON.parse(stored) : [];
+  applyConsultationFiltersAndRender();
+}
+// Save consultations to localStorage
+function saveConsultations() {
+  localStorage.setItem('consultations', JSON.stringify(consultations));
+}
+// Apply filters and render
+function applyConsultationFiltersAndRender() {
+  filteredConsultations = consultations.filter((consultation) => {
+    const matchesSearch = !consultationFilter.searchTerm ||
+      consultation.clientName.toLowerCase().includes(consultationFilter.searchTerm) ||
+      consultation.clientEmail.toLowerCase().includes(consultationFilter.searchTerm) ||
+      consultation.serviceName.toLowerCase().includes(consultationFilter.searchTerm);
+    
+    const matchesService = !consultationFilter.service ||
+      consultation.serviceName === consultationFilter.service;
+    
+    return matchesSearch && matchesService;
+  });
+  
+  renderConsultationsTable();
+}
+// Render consultations table
+function renderConsultationsTable() {
+  const container = document.getElementById('consultations-table-container');
+  if (!container) return;
+  const bgColor = '#000000';
+  const surfaceColor = '#1f2937';
+  const textColor = '#f3f4f6';
+  const primaryColor = '#f3c623';
+  const displayConsultations = filteredConsultations;
+  const consultationRows = displayConsultations.length > 0
+    ? displayConsultations.map((consultation) => `
+        <tr style="border-color: ${primaryColor}40;">
+          <td>
+            <div class="table-cell-user">
+              <div class="user-avatar-small" style="background: ${primaryColor}; color: ${bgColor};">
+                ${consultation.clientName.charAt(0)}
+              </div>
+              <div>
+                <div style="font-weight: 600;">${consultation.clientName}</div>
+                <div style="font-size: 12px; opacity: 0.7;">${consultation.clientEmail}</div>
+              </div>
+            </div>
+          </td>
+          <td dir="ltr">${consultation.whatsappPhone}</td>
+          <td>${consultation.serviceName}</td>
+          <td>
+            <button class="action-btn notes-btn" data-consultation-id="${consultation.id}" 
+                    style="background: #f3c62330; color: ${primaryColor};">
+              <i class="fas fa-sticky-note"></i>
+            </button>
+          </td>
+          <td>
+            <div class="action-buttons">
+              <button class="action-btn view-consultation-btn" data-consultation-id="${consultation.id}" 
+                      style="color: white;">
+                <i class="fas fa-eye"></i>
+              </button>
+              <button class="action-btn delete-consultation-btn" data-consultation-id="${consultation.id}" 
+                      style="color: #ef4444;">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      `).join('')
+    : `<tr><td colspan="5" style="text-align: center; padding: 40px; color: #9ca3af;">لا توجد استشارات محجوزة</td></tr>`;
+  container.innerHTML = `
+    <div class="cases-table-wrapper" style="background-color: ${surfaceColor}; color: ${textColor};">
+      <div class="cases-table-header" style="background: linear-gradient(135deg, ${surfaceColor} 0%, ${bgColor} 100%);">
+        <div class="cases-table-title">
+          <div class="cases-table-icon" style="background: ${primaryColor};">
+            <i class="fas fa-calendar-check" style="color: ${bgColor};"></i>
+          </div>
+          <div>
+            <h3 style="color: ${primaryColor};">المواعيد والاستشارات</h3>
+            <p>الاستشارات المحجوزة من العملاء (${displayConsultations.length})</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="cases-table-controls">
+        <div class="cases-table-search">
+          <div class="search-bar-container">
+            <input type="text" placeholder="بحث في الاستشارات..." 
+                  class="search-input consultation-search-input" 
+                  id="consultation-search-input"
+                  value="${consultationFilter.searchTerm}"
+                  style="border: 1px solid ${primaryColor}40;" />
+            <label for="consultation-search-input"><i class="fas fa-search"></i></label>
+          </div>
+          ${consultationFilter.searchTerm ? 
+            `<button class="reset-filter-btn" title="إعادة تعيين" onclick="resetConsultationFilters()" 
+                     style="background: none; border: none; color: ${primaryColor}; cursor: pointer; font-size: 18px; padding: 0 8px;">
+              <i class="fas fa-times"></i>
+            </button>` : ""}
+        </div>
+      </div>
+      
+      <div class="cases-table-scroll">
+        <table class="cases-table">
+          <thead>
+            <tr style="border-color: ${primaryColor}40; background: ${bgColor};">
+              <th style="color: ${primaryColor};">
+                <div><i class="fas fa-user"></i><span>اسم العميل</span></div>
+              </th>
+              <th style="color: ${primaryColor};">
+                <div><i class="fab fa-whatsapp"></i><span>رقم التواصل</span></div>
+              </th>
+              <th style="color: ${primaryColor};">
+                <div><i class="fas fa-briefcase"></i><span>الاستشارة</span></div>
+              </th>
+              <th style="color: ${primaryColor};">
+                <div><i class="fas fa-sticky-note"></i><span>الملاحظات</span></div>
+              </th>
+              <th style="color: ${primaryColor};">
+                <div><i class="fas fa-tools"></i><span>الإجراءات</span></div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            ${consultationRows}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+  // Attach event listeners
+  container.querySelectorAll('.view-consultation-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.consultationId;
+      const consultation = consultations.find(c => c.id === id);
+      if (consultation) showConsultationDetails(consultation);
+    });
+  });
+  container.querySelectorAll('.delete-consultation-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.consultationId;
+      deleteConsultation(id);
+    });
+  });
+  container.querySelectorAll('.notes-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.consultationId;
+      const consultation = consultations.find(c => c.id === id);
+      if (consultation) showEditConsultationNotes(consultation);
+    });
+  });
+  // Search input
+  const searchInput = container.querySelector('.consultation-search-input');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      consultationFilter.searchTerm = e.target.value.toLowerCase();
+      applyConsultationFiltersAndRender();
+    });
+  }
+}
+// Show consultation details
+function showConsultationDetails(consultation) {
+  document.getElementById('detail-consultation-name').textContent = consultation.clientName;
+  document.getElementById('detail-consultation-email').textContent = consultation.clientEmail;
+  document.getElementById('detail-consultation-phone').textContent = consultation.whatsappPhone;
+  document.getElementById('detail-consultation-service').textContent = consultation.serviceName;
+  document.getElementById('detail-consultation-date').textContent = new Date(consultation.submittedDate).toLocaleDateString('ar-EG');
+  document.getElementById('detail-consultation-notes').textContent = consultation.notes || 'لا توجد ملاحظات';
+  showModal('view-consultation-modal');
+}
+// Show edit notes modal
+function showEditConsultationNotes(consultation) {
+  document.getElementById('edit-consultation-id').value = consultation.id;
+  document.getElementById('consultation-notes-text').value = consultation.notes || '';
+  showModal('edit-consultation-notes-modal');
+}
+// Handle edit notes
+function handleEditConsultationNotes(event) {
+  event.preventDefault();
+  const id = document.getElementById('edit-consultation-id').value;
+  const notes = document.getElementById('consultation-notes-text').value;
+  
+  const index = consultations.findIndex(c => c.id === id);
+  if (index !== -1) {
+    consultations[index].notes = notes;
+    saveConsultations();
+    applyConsultationFiltersAndRender();
+    closeModal('edit-consultation-notes-modal');
+  }
+}
+// Delete consultation
+function deleteConsultation(id) {
+  consultationToDelete = id;
+  showModal('delete-consultation-modal');
+  
+  document.getElementById('confirm-delete-consultation-btn').onclick = function() {
+    consultations = consultations.filter(c => c.id !== consultationToDelete);
+    saveConsultations();
+    applyConsultationFiltersAndRender();
+    closeModal('delete-consultation-modal');
+    consultationToDelete = null;
+  };
+}
+// Reset filters
+function resetConsultationFilters() {
+  consultationFilter.searchTerm = "";
+  consultationFilter.service = null;
+  applyConsultationFiltersAndRender();
+}
+// Update switchPage to load consultations
+const originalSwitchPageFunc = switchPage;
+switchPage = function(page) {
+  originalSwitchPageFunc(page);
+  
+  if (page === 'consultations') {
+    loadConsultations();
+  }
+};
 
 // ==================== Cases Functions ====================
 
