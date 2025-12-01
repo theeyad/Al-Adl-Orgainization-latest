@@ -904,6 +904,10 @@ body {
   max-width: 300px;
 }
 
+#consultations-table-container .cases-table-search {
+  margin-right: auto;
+}
+
 .cases-table-search .search-input {
   width: 100%;
   margin-right: auto;

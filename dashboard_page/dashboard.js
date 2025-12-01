@@ -1051,6 +1051,97 @@ function renderConsultationsTable() {
   const textColor = '#f3f4f6';
   const primaryColor = '#f3c623';
   const displayConsultations = filteredConsultations;
+  // Check if table structure exists
+  const existingTable = container.querySelector('.cases-table-wrapper');
+  
+  if (!existingTable) {
+    // First render - create full structure
+    container.innerHTML = `
+      <div class="cases-table-wrapper" style="background-color: ${surfaceColor}; color: ${textColor};">
+        <div class="cases-table-header" style="background: linear-gradient(135deg, ${surfaceColor} 0%, ${bgColor} 100%);">
+          <div class="cases-table-title">
+            <div class="cases-table-icon" style="background: ${primaryColor};">
+              <i class="fas fa-calendar-check" style="color: ${bgColor};"></i>
+            </div>
+            <div>
+              <h3 style="color: ${primaryColor};">المواعيد والاستشارات</h3>
+              <p id="consultations-count">الاستشارات المحجوزة من العملاء (${displayConsultations.length})</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="cases-table-controls">
+          <div class="cases-table-search">
+            <div class="search-bar-container">
+              <input type="text" placeholder="بحث في الاستشارات..." 
+                    class="search-input consultation-search-input" 
+                    id="consultation-search-input"
+                    style="border: 1px solid ${primaryColor}40;" />
+              <label for="consultation-search-input"><i class="fas fa-search"></i></label>
+            </div>
+            <button class="reset-filter-btn" id="reset-consultation-filter" title="إعادة تعيين" 
+                   style="background: none; border: none; color: ${primaryColor}; cursor: pointer; font-size: 18px; padding: 0 8px; display: none;">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="cases-table-scroll">
+          <table class="cases-table">
+            <thead>
+              <tr style="border-color: ${primaryColor}40; background: ${bgColor};">
+                <th style="color: ${primaryColor};">
+                  <div><i class="fas fa-user"></i><span>اسم العميل</span></div>
+                </th>
+                <th style="color: ${primaryColor};">
+                  <div><i class="fab fa-whatsapp"></i><span>رقم التواصل</span></div>
+                </th>
+                <th style="color: ${primaryColor};">
+                  <div><i class="fas fa-briefcase"></i><span>الاستشارة</span></div>
+                </th>
+                <th style="color: ${primaryColor};">
+                  <div><i class="fas fa-sticky-note"></i><span>الملاحظات</span></div>
+                </th>
+                <th style="color: ${primaryColor};">
+                  <div><i class="fas fa-tools"></i><span>الإجراءات</span></div>
+                </th>
+              </tr>
+            </thead>
+            <tbody id="consultations-tbody">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+    // Attach search input listener (only once)
+    const searchInput = container.querySelector('.consultation-search-input');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        consultationFilter.searchTerm = e.target.value.toLowerCase();
+        
+        // Show/hide reset button
+        const resetBtn = container.querySelector('#reset-consultation-filter');
+        if (resetBtn) {
+          resetBtn.style.display = consultationFilter.searchTerm ? 'block' : 'none';
+        }
+        
+        applyConsultationFiltersAndRender();
+      });
+    }
+    // Attach reset button listener
+    const resetBtn = container.querySelector('#reset-consultation-filter');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', resetConsultationFilters);
+    }
+  }
+  // Update count
+  const countElement = container.querySelector('#consultations-count');
+  if (countElement) {
+    countElement.textContent = `الاستشارات المحجوزة من العملاء (${displayConsultations.length})`;
+  }
+  // Update only tbody
+  const tbody = container.querySelector('#consultations-tbody');
+  if (!tbody) return;
   const consultationRows = displayConsultations.length > 0
     ? displayConsultations.map((consultation) => `
         <tr style="border-color: ${primaryColor}40;">
@@ -1088,96 +1179,30 @@ function renderConsultationsTable() {
         </tr>
       `).join('')
     : `<tr><td colspan="5" style="text-align: center; padding: 40px; color: #9ca3af;">لا توجد استشارات محجوزة</td></tr>`;
-  container.innerHTML = `
-    <div class="cases-table-wrapper" style="background-color: ${surfaceColor}; color: ${textColor};">
-      <div class="cases-table-header" style="background: linear-gradient(135deg, ${surfaceColor} 0%, ${bgColor} 100%);">
-        <div class="cases-table-title">
-          <div class="cases-table-icon" style="background: ${primaryColor};">
-            <i class="fas fa-calendar-check" style="color: ${bgColor};"></i>
-          </div>
-          <div>
-            <h3 style="color: ${primaryColor};">المواعيد والاستشارات</h3>
-            <p>الاستشارات المحجوزة من العملاء (${displayConsultations.length})</p>
-          </div>
-        </div>
-      </div>
-      
-      <div class="cases-table-controls">
-        <div class="cases-table-search">
-          <div class="search-bar-container">
-            <input type="text" placeholder="بحث في الاستشارات..." 
-                  class="search-input consultation-search-input" 
-                  id="consultation-search-input"
-                  value="${consultationFilter.searchTerm}"
-                  style="border: 1px solid ${primaryColor}40;" />
-            <label for="consultation-search-input"><i class="fas fa-search"></i></label>
-          </div>
-          ${consultationFilter.searchTerm ? 
-            `<button class="reset-filter-btn" title="إعادة تعيين" onclick="resetConsultationFilters()" 
-                     style="background: none; border: none; color: ${primaryColor}; cursor: pointer; font-size: 18px; padding: 0 8px;">
-              <i class="fas fa-times"></i>
-            </button>` : ""}
-        </div>
-      </div>
-      
-      <div class="cases-table-scroll">
-        <table class="cases-table">
-          <thead>
-            <tr style="border-color: ${primaryColor}40; background: ${bgColor};">
-              <th style="color: ${primaryColor};">
-                <div><i class="fas fa-user"></i><span>اسم العميل</span></div>
-              </th>
-              <th style="color: ${primaryColor};">
-                <div><i class="fab fa-whatsapp"></i><span>رقم التواصل</span></div>
-              </th>
-              <th style="color: ${primaryColor};">
-                <div><i class="fas fa-briefcase"></i><span>الاستشارة</span></div>
-              </th>
-              <th style="color: ${primaryColor};">
-                <div><i class="fas fa-sticky-note"></i><span>الملاحظات</span></div>
-              </th>
-              <th style="color: ${primaryColor};">
-                <div><i class="fas fa-tools"></i><span>الإجراءات</span></div>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            ${consultationRows}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  `;
-  // Attach event listeners
-  container.querySelectorAll('.view-consultation-btn').forEach(btn => {
+  tbody.innerHTML = consultationRows;
+  // Attach event listeners to new rows
+  tbody.querySelectorAll('.view-consultation-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const id = btn.dataset.consultationId;
       const consultation = consultations.find(c => c.id === id);
       if (consultation) showConsultationDetails(consultation);
     });
   });
-  container.querySelectorAll('.delete-consultation-btn').forEach(btn => {
+  tbody.querySelectorAll('.delete-consultation-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const id = btn.dataset.consultationId;
       deleteConsultation(id);
     });
   });
-  container.querySelectorAll('.notes-btn').forEach(btn => {
+  tbody.querySelectorAll('.notes-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const id = btn.dataset.consultationId;
       const consultation = consultations.find(c => c.id === id);
       if (consultation) showEditConsultationNotes(consultation);
     });
   });
-  // Search input
-  const searchInput = container.querySelector('.consultation-search-input');
-  if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-      consultationFilter.searchTerm = e.target.value.toLowerCase();
-      applyConsultationFiltersAndRender();
-    });
-  }
 }
+
 // Show consultation details
 function showConsultationDetails(consultation) {
   document.getElementById('detail-consultation-name').textContent = consultation.clientName;
@@ -1225,6 +1250,19 @@ function deleteConsultation(id) {
 function resetConsultationFilters() {
   consultationFilter.searchTerm = "";
   consultationFilter.service = null;
+  
+  // Clear the input text
+  const searchInput = document.getElementById('consultation-search-input');
+  if (searchInput) {
+    searchInput.value = '';
+  }
+  
+  // Hide reset button
+  const resetBtn = document.getElementById('reset-consultation-filter');
+  if (resetBtn) {
+    resetBtn.style.display = 'none';
+  }
+  
   applyConsultationFiltersAndRender();
 }
 // Update switchPage to load consultations
@@ -1282,8 +1320,19 @@ function handleCaseFilter(event) {
 function resetCaseFilters() {
   caseFilter.status = null;
   caseFilter.searchTerm = "";
-  document.getElementById("case-search-input").value = "";
-  document.getElementById("filter-status-select").value = "all";
+  
+  // Clear the input text
+  const searchInput = document.getElementById('case-search-input');
+  if (searchInput) {
+    searchInput.value = '';
+  }
+  
+  // Hide reset button
+  const resetBtn = document.getElementById('reset-case-filter');
+  if (resetBtn) {
+    resetBtn.style.display = 'none';
+  }
+  
   applyFiltersAndRender();
 }
 
@@ -1400,174 +1449,146 @@ function renderCasesTable() {
     </tr>
   `;
 
-  container.innerHTML = `
-    <div class="cases-table-wrapper" style="background-color: ${surfaceColor}; color: ${textColor};">
-      <div class="cases-table-header" style="background: linear-gradient(135deg, ${surfaceColor} 0%, ${bgColor} 100%);">
-        <div class="cases-table-title">
-          <div class="cases-table-icon" style="background: ${primaryColor};">
-            <i class="fas fa-gavel" style="color: ${bgColor};"></i>
-          </div>
-          <div>
-            <h3 style="color: ${primaryColor};">جدول القضايا</h3>
-            <p>إدارة ومتابعة جميع القضايا (${displayCases.length})</p>
+  // Check if table structure exists
+  const existingTable = container.querySelector('.cases-table-wrapper');
+  
+  if (!existingTable) {
+    // First render - create full structure
+    container.innerHTML = `
+      <div class="cases-table-wrapper" style="background-color: ${surfaceColor}; color: ${textColor};">
+        <div class="cases-table-header" style="background: linear-gradient(135deg, ${surfaceColor} 0%, ${bgColor} 100%);">
+          <div class="cases-table-title">
+            <div class="cases-table-icon" style="background: ${primaryColor};">
+              <i class="fas fa-gavel" style="color: ${bgColor};"></i>
+            </div>
+            <div>
+              <h3 style="color: ${primaryColor};">جدول القضايا</h3>
+              <p id="cases-count">إجمالي القضايا (${displayCases.length})</p>
+            </div>
           </div>
         </div>
-      </div>
-      
-      <div class="cases-table-controls">
-        <div class="cases-table-buttons">
-          <button class="btn-primary add-case-btn" style="background: ${primaryColor}; color: ${bgColor};">
-            <i class="fas fa-plus"></i>
-            <span>إضافة قضية جديدة</span>
-          </button>
-          <button class="btn-secondary" onclick="exportCasesToExcel()">
-            <i class="fas fa-file-excel"></i>
-            <span>تصدير Excel</span>
-          </button>
-        </div>
-        <div class="cases-table-search">
-        <div class="search-bar-container" >
-            <input type="text" placeholder="بحث في القضايا..." 
-                  class="search-input case-search-input" 
-                  id="case-search-input"
-                  value="${caseFilter.searchTerm}"
-                  style="border: 1px solid ${primaryColor}40;" />
-            <label for="case-search-input"><i class="fas fa-search"></i></label>
+        
+        <div class="cases-table-controls">
+          <div class="cases-table-buttons">
+            <button class="btn-primary" onclick="showAddCaseModal()">
+              <i class="fas fa-plus"></i>
+              <span>إضافة قضية جديدة</span>
+            </button>
+            <button class="btn-secondary" onclick="exportCasesToExcel()">
+              <i class="fas fa-file-excel"></i>
+              <span>تصدير Excel</span>
+            </button>
           </div>
-          <button class="filter-btn" title="الفلاتر">
-            <i class="fas fa-filter"></i>
-          </button>
-          ${
-            caseFilter.searchTerm || caseFilter.status
-              ? `<button class="reset-filter-btn" title="إعادة تعيين" onclick="resetCaseFilters()" style="background: none; border: none; color: ${primaryColor}; cursor: pointer; font-size: 18px; padding: 0 8px;"><i class="fas fa-times"></i></button>`
-              : ""
-          }
+          
+          <div class="cases-table-search">
+            <div class="search-bar-container">
+              <input type="text" placeholder="بحث في القضايا..." 
+                    class="search-input case-search-input" 
+                    id="case-search-input"
+                    style="border: 1px solid ${primaryColor}40;" />
+              <label for="case-search-input"><i class="fas fa-search"></i></label>
+            </div>
+            <button class="reset-filter-btn" id="reset-case-filter" title="إعادة تعيين" 
+                   style="background: none; border: none; color: ${primaryColor}; cursor: pointer; font-size: 18px; padding: 0 8px; display: none;">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="cases-table-scroll">
+          <table class="cases-table">
+            <thead>
+              <tr style="border-color: ${primaryColor}40; background: ${bgColor};">
+                <th style="color: ${primaryColor};">
+                  <div><i class="fas fa-user"></i><span>اسم العميل</span></div>
+                </th>
+                <th style="color: ${primaryColor};">
+                  <div><i class="fas fa-hashtag"></i><span>رقم القيد</span></div>
+                </th>
+                <th style="color: ${primaryColor};">
+                  <div><i class="fas fa-gavel"></i><span>رقم القضية</span></div>
+                </th>
+                <th style="color: ${primaryColor};">
+                  <div><i class="fas fa-calendar"></i><span>تاريخ الموعد</span></div>
+                </th>
+                <th style="color: ${primaryColor};">
+                  <div><i class="fas fa-info-circle"></i><span>الحالة</span></div>
+                </th>
+                <th style="color: ${primaryColor};">
+                  <div><i class="fas fa-sticky-note"></i><span>الملاحظات</span></div>
+                </th>
+                <th style="color: ${primaryColor};">
+                  <div><i class="fas fa-tools"></i><span>الإجراءات</span></div>
+                </th>
+              </tr>
+            </thead>
+            <tbody id="cases-tbody">
+            </tbody>
+          </table>
         </div>
       </div>
-      
-      <div class="cases-table-scroll">
-        <table class="cases-table">
-          <thead>
-            <tr style="border-color: ${primaryColor}40; background: ${bgColor};">
-              <th style="color: ${primaryColor};">
-                <div>
-                  <i class="fas fa-user"></i>
-                  <span>اسم العميل</span>
-                </div>
-              </th>
-              <th style="color: ${primaryColor};">
-                <div>
-                  <i class="fas fa-hashtag"></i>
-                  <span>رقم المحضر</span>
-                </div>
-              </th>
-              <th style="color: ${primaryColor};">
-                <div>
-                  <i class="fas fa-hashtag"></i>
-                  <span>رقم القضية</span>
-                </div>
-              </th>
-              <th style="color: ${primaryColor};">
-                <div>
-                  <i class="fas fa-calendar"></i>
-                  <span>تاريخ الجلسة</span>
-                </div>
-              </th>
-              <th style="color: ${primaryColor};">
-                <div>
-                  <i class="fas fa-cog"></i>
-                  <span>الحالة</span>
-                </div>
-              </th>
-              <th style="color: ${primaryColor};">
-                <div>
-                  <i class="fas fa-sticky-note"></i>
-                  <span>الملاحظات</span>
-                </div>
-              </th>
-              <th style="color: ${primaryColor};">
-                <div>
-                  <i class="fas fa-tools"></i>
-                  <span>الإجراءات</span>
-                </div>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            ${casesRows}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  `;
-
-  // Attach event listeners
-  const addCaseBtn = container.querySelector(".add-case-btn");
-  if (addCaseBtn) {
-    addCaseBtn.addEventListener("click", showAddCaseModal);
+    `;
+    // Attach search input listener (only once)
+    const searchInput = container.querySelector('.case-search-input');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        caseFilter.searchTerm = e.target.value.toLowerCase();
+        
+        // Show/hide reset button
+        const resetBtn = container.querySelector('#reset-case-filter');
+        if (resetBtn) {
+          resetBtn.style.display = caseFilter.searchTerm ? 'block' : 'none';
+        }
+        
+        applyFiltersAndRender();
+      });
+    }
+    // Attach reset button listener
+    const resetBtn = container.querySelector('#reset-case-filter');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', resetCaseFilters);
+    }
   }
-
-  // View case buttons
-  container.querySelectorAll(".view-case-btn").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      const caseId = btn.dataset.caseId;
-      const caseItem = cases.find((c) => c.id === caseId);
-      if (caseItem) {
-        showCaseDetailModal(caseItem);
-      }
-    });
-  });
-
-  // Edit case buttons
-  container.querySelectorAll(".edit-case-btn").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      const caseId = btn.dataset.caseId;
-      const caseItem = cases.find((c) => c.id === caseId);
-      if (caseItem) {
-        showEditCaseModal(caseItem);
-      }
-    });
-  });
-
-  // Delete case buttons
-  container.querySelectorAll(".delete-case-btn").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      const caseId = btn.dataset.caseId;
-      const caseItem = cases.find((c) => c.id === caseId);
-      if (caseItem) {
-        deleteCase(caseItem);
-      }
-    });
-  });
-
-  // Notes buttons
-  container.querySelectorAll(".notes-btn").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      const caseId = btn.dataset.caseId;
-      const caseItem = cases.find((c) => c.id === caseId);
-      if (caseItem) {
-        showCaseNotesModal(caseItem);
-      }
-    });
-  });
-
-  // Search input
-  const searchInput = container.querySelector(".case-search-input");
-  if (searchInput) {
-    searchInput.addEventListener("input", (e) => {
-      caseFilter.searchTerm = e.target.value.toLowerCase();
-      applyFiltersAndRender();
-    });
+  // Update count
+  const countElement = container.querySelector('#cases-count');
+  if (countElement) {
+    countElement.textContent = `إجمالي القضايا (${displayCases.length})`;
   }
-
-  // Filter button
-  const filterBtn = container.querySelector(".filter-btn");
-  if (filterBtn) {
-    filterBtn.addEventListener("click", () => {
-      showCaseFilterModal();
+  // Update only tbody
+  const tbody = container.querySelector('#cases-tbody');
+  if (!tbody) return;
+  tbody.innerHTML = casesRows;
+  // Attach event listeners to new rows
+  tbody.querySelectorAll('.view-case-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.caseId;
+      const caseItem = cases.find(c => c.id === id);
+      if (caseItem) showCaseDetailModal(caseItem);
     });
-  }
+  });
+  tbody.querySelectorAll('.edit-case-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.caseId;
+      const caseItem = cases.find(c => c.id === id);
+      if (caseItem) showEditCaseModal(caseItem);
+    });
+  });
+  tbody.querySelectorAll('.delete-case-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.caseId;
+      const caseItem = cases.find(c => c.id === id);
+      if (caseItem) deleteCase(caseItem);
+    });
+  });
+  tbody.querySelectorAll('.notes-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.caseId;
+      const caseItem = cases.find(c => c.id === id);
+      if (caseItem) showCaseNotesModal(caseItem);
+    });
+  });
 }
+
 
 // Show Add Case Modal
 function showAddCaseModal() {
@@ -1733,8 +1754,17 @@ function handleAdministrativeFilter(event) {
 function resetAdministrativeFilters() {
   administrativeFilter.priority = null;
   administrativeFilter.searchTerm = "";
-  document.getElementById("administrative-search-input").value = "";
-  document.getElementById("filter-priority-select").value = "all";
+
+  // Clear the input text
+  const searchInput = document.getElementById('administrative-search-input');
+  if (searchInput) {
+    searchInput.value = '';
+  }
+  // Hide reset button
+  const resetBtn = document.getElementById('reset-administrative-filter');
+  if (resetBtn) {
+    resetBtn.style.display = 'none';
+  }
   applyAdministrativeFiltersAndRender();
 }
 
@@ -1848,168 +1878,143 @@ function renderAdministrativeTable() {
     </tr>
   `;
 
-  container.innerHTML = `
-    <div class="cases-table-wrapper" style="background-color: ${surfaceColor}; color: ${textColor};">
-      <div class="cases-table-header" style="background: linear-gradient(135deg, ${surfaceColor} 0%, ${bgColor} 100%);">
-        <div class="cases-table-title">
-          <div class="cases-table-icon" style="background: ${primaryColor};">
-            <i class="fas fa-book" style="color: ${bgColor};"></i>
-          </div>
-          <div>
-            <h3 style="color: ${primaryColor};">الأعمال الإدارية</h3>
-            <p>إدارة ومتابعة الأعمال الإدارية (${displayTasks.length})</p>
+  // Check if table structure exists
+  const existingTable = container.querySelector('.cases-table-wrapper');
+  
+  if (!existingTable) {
+    // First render - create full structure
+    container.innerHTML = `
+      <div class="cases-table-wrapper" style="background-color: ${surfaceColor}; color: ${textColor};">
+        <div class="cases-table-header" style="background: linear-gradient(135deg, ${surfaceColor} 0%, ${bgColor} 100%);">
+          <div class="cases-table-title">
+            <div class="cases-table-icon" style="background: ${primaryColor};">
+              <i class="fas fa-tasks" style="color: ${bgColor};"></i>
+            </div>
+            <div>
+              <h3 style="color: ${primaryColor};">الأعمال الإدارية</h3>
+              <p id="administrative-count">إجمالي الأعمال (${displayTasks.length})</p>
+            </div>
           </div>
         </div>
-      </div>
-      
-      <div class="cases-table-controls">
-        <div class="cases-table-buttons">
-          <button class="btn-primary add-administrative-btn" style="background: ${primaryColor}; color: ${bgColor};">
-            <i class="fas fa-plus"></i>
-            <span>إضافة عمل جديد</span>
-          </button>
-          <button class="btn-secondary" onclick="exportAdministrativeToExcel()">
-            <i class="fas fa-file-excel"></i>
-            <span>تصدير Excel</span>
-          </button>
-        </div>
-        <div class="cases-table-search">
-          <div class="search-bar-container">
-            <input type="text" placeholder="بحث في الأعمال الإدارية..." 
-                  class="search-input administrative-search-input" 
-                  id="administrative-search-input"
-                  value="${administrativeFilter.searchTerm}"
-                  style="border: 1px solid ${primaryColor}40;" />
-            <label for="administrative-search-input"><i class="fas fa-search"></i></label>
+        
+        <div class="cases-table-controls">
+          <div class="cases-table-buttons">
+            <button class="btn-primary" onclick="showAddAdministrativeModal()">
+              <i class="fas fa-plus"></i>
+              <span>إضافة عمل إداري</span>
+            </button>
+            <button class="btn-secondary" onclick="exportAdministrativeToExcel()">
+              <i class="fas fa-file-excel"></i>
+              <span>تصدير Excel</span>
+            </button>
           </div>
-          <button class="filter-btn" title="الفلاتر">
-            <i class="fas fa-filter"></i>
-          </button>
-          ${
-            administrativeFilter.searchTerm || administrativeFilter.priority
-              ? `<button class="reset-filter-btn" title="إعادة تعيين" onclick="resetAdministrativeFilters()" style="background: none; border: none; color: ${primaryColor}; cursor: pointer; font-size: 18px; padding: 0 8px;"><i class="fas fa-times"></i></button>`
-              : ""
-          }
+          
+          <div class="cases-table-search">
+            <div class="search-bar-container">
+              <input type="text" placeholder="بحث في الأعمال الإدارية..." 
+                    class="search-input administrative-search-input" 
+                    id="administrative-search-input"
+                    style="border: 1px solid ${primaryColor}40;" />
+              <label for="administrative-search-input"><i class="fas fa-search"></i></label>
+            </div>
+            <button class="reset-filter-btn" id="reset-administrative-filter" title="إعادة تعيين" 
+                   style="background: none; border: none; color: ${primaryColor}; cursor: pointer; font-size: 18px; padding: 0 8px; display: none;">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="cases-table-scroll">
+          <table class="cases-table">
+            <thead>
+              <tr style="border-color: ${primaryColor}40; background: ${bgColor};">
+                <th style="color: ${primaryColor};">
+                  <div><i class="fas fa-user"></i><span>صاحب العمل</span></div>
+                </th>
+                <th style="color: ${primaryColor};">
+                  <div><i class="fas fa-hashtag"></i><span>رقم العمل</span></div>
+                </th>
+                <th style="color: ${primaryColor};">
+                  <div><i class="fas fa-calendar"></i><span>تاريخ الموعد</span></div>
+                </th>
+                <th style="color: ${primaryColor};">
+                  <div><i class="fas fa-exclamation-circle"></i><span>الأولوية</span></div>
+                </th>
+                <th style="color: ${primaryColor};">
+                  <div><i class="fas fa-sticky-note"></i><span>الملاحظات</span></div>
+                </th>
+                <th style="color: ${primaryColor};">
+                  <div><i class="fas fa-tools"></i><span>الإجراءات</span></div>
+                </th>
+              </tr>
+            </thead>
+            <tbody id="administrative-tbody">
+            </tbody>
+          </table>
         </div>
       </div>
-      
-      <div class="cases-table-scroll">
-        <table class="cases-table">
-          <thead>
-            <tr style="border-color: ${primaryColor}40; background: ${bgColor};">
-              <th style="color: ${primaryColor};">
-                <div>
-                  <i class="fas fa-user"></i>
-                  <span>اسم العمل / الصاحب</span>
-                </div>
-              </th>
-              <th style="color: ${primaryColor};">
-                <div>
-                  <i class="fas fa-hashtag"></i>
-                  <span>رقم العمل</span>
-                </div>
-              </th>
-              <th style="color: ${primaryColor};">
-                <div>
-                  <i class="fas fa-calendar"></i>
-                  <span>تاريخ الموعد</span>
-                </div>
-              </th>
-              <th style="color: ${primaryColor};">
-                <div>
-                  <i class="fas fa-exclamation-circle"></i>
-                  <span>الأولوية</span>
-                </div>
-              </th>
-              <th style="color: ${primaryColor};">
-                <div>
-                  <i class="fas fa-sticky-note"></i>
-                  <span>الملاحظات</span>
-                </div>
-              </th>
-              <th style="color: ${primaryColor};">
-                <div>
-                  <i class="fas fa-tools"></i>
-                  <span>الإجراءات</span>
-                </div>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            ${administrativeRows}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  `;
-
-  // Attach event listeners
-  const addBtn = container.querySelector(".add-administrative-btn");
-  if (addBtn) {
-    addBtn.addEventListener("click", showAddAdministrativeModal);
+    `;
+    // Attach search input listener (only once)
+    const searchInput = container.querySelector('.administrative-search-input');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        administrativeFilter.searchTerm = e.target.value.toLowerCase();
+        
+        // Show/hide reset button
+        const resetBtn = container.querySelector('#reset-administrative-filter');
+        if (resetBtn) {
+          resetBtn.style.display = administrativeFilter.searchTerm ? 'block' : 'none';
+        }
+        
+        applyAdministrativeFiltersAndRender();
+      });
+    }
+    // Attach reset button listener
+    const resetBtn = container.querySelector('#reset-administrative-filter');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', resetAdministrativeFilters);
+    }
   }
-
-  // View buttons
-  container.querySelectorAll(".view-administrative-btn").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      const taskId = btn.dataset.administrativeId;
-      const task = administrative.find((t) => t.id === taskId);
-      if (task) {
-        showAdministrativeDetailModal(task);
-      }
-    });
-  });
-
-  // Edit buttons
-  container.querySelectorAll(".edit-administrative-btn").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      const taskId = btn.dataset.administrativeId;
-      const task = administrative.find((t) => t.id === taskId);
-      if (task) {
-        showEditAdministrativeModal(task);
-      }
-    });
-  });
-
-  // Delete buttons
-  container.querySelectorAll(".delete-administrative-btn").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      const taskId = btn.dataset.administrativeId;
-      const task = administrative.find((t) => t.id === taskId);
-      if (task) {
-        deleteAdministrative(task);
-      }
-    });
-  });
-
-  // Notes buttons
-  container.querySelectorAll(".notes-btn").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      const taskId = btn.dataset.administrativeId;
-      const task = administrative.find((t) => t.id === taskId);
-      if (task) {
-        showAdministrativeNotesModal(task);
-      }
-    });
-  });
-
-  // Search input
-  const searchInput = container.querySelector(".administrative-search-input");
-  if (searchInput) {
-    searchInput.addEventListener("input", (e) => {
-      administrativeFilter.searchTerm = e.target.value.toLowerCase();
-      applyAdministrativeFiltersAndRender();
-    });
+  // Update count
+  const countElement = container.querySelector('#administrative-count');
+  if (countElement) {
+    countElement.textContent = `إجمالي الأعمال (${displayTasks.length})`;
   }
-
-  // Filter button
-  const filterBtn = container.querySelector(".filter-btn");
-  if (filterBtn) {
-    filterBtn.addEventListener("click", () => {
-      showAdministrativeFilterModal();
+  // Update only tbody
+  const tbody = container.querySelector('#administrative-tbody');
+  if (!tbody) return;
+  tbody.innerHTML = administrativeRows;
+  // Attach event listeners to new rows
+  tbody.querySelectorAll('.view-administrative-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.administrativeId;
+      const task = administrative.find(t => t.id === id);
+      if (task) showAdministrativeDetailModal(task);
     });
-  }
+  });
+  tbody.querySelectorAll('.edit-administrative-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.administrativeId;
+      const task = administrative.find(t => t.id === id);
+      if (task) showEditAdministrativeModal(task);
+    });
+  });
+  tbody.querySelectorAll('.delete-administrative-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.administrativeId;
+      const task = administrative.find(t => t.id === id);
+      if (task) deleteAdministrative(task);
+    });
+  });
+  tbody.querySelectorAll('.notes-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.administrativeId;
+      const task = administrative.find(t => t.id === id);
+      if (task) showAdministrativeNotesModal(task);
+    });
+  });
 }
+
 
 // Show Add Administrative Modal
 function showAddAdministrativeModal() {
