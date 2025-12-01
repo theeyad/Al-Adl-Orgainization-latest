@@ -44,6 +44,28 @@ body {
   transition: background-color var(--transition-duration) ease;
 }
 
+/* Scrollbar Width */
+.sidebar::-webkit-scrollbar {
+  width: 4px;           /* Adjust thickness */
+}
+
+/* Scrollbar Track */
+.sidebar::-webkit-scrollbar-track {
+  background: #1f2937;  /* Sidebar background */
+  border-radius: 10px;
+}
+
+/* Scrollbar Thumb */
+.sidebar::-webkit-scrollbar-thumb {
+  background: #4b5563;  /* Gray thumb */
+  border-radius: 10px;
+}
+
+/* Thumb Hover */
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;  /* Lighter when hovered */
+}
+
 /* Responsive Sidebar - Mobile */
 @media (max-width: 1199px) {
   .sidebar {
@@ -54,7 +76,6 @@ body {
     height: 100vh;
     z-index: 40;
     transition: right 0.3s ease;
-    overflow-y: scroll;
   }
 
   .sidebar.active {
