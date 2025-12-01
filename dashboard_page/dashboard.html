@@ -962,6 +962,63 @@
         </div>
     </div>
 
+    <!-- Delete WhatsApp Contact Confirmation Modal -->
+    <div id="delete-whatsapp-contact-modal" class="modal modal-hidden">
+        <div class="modal-content">
+            <h3>تأكيد الحذف</h3>
+            <p style="color: #d1d5db; margin: 20px 0; text-align: center;">
+                هل أنت متأكد من حذف جهة الاتصال هذه؟
+            </p>
+            <div class="form-actions">
+                <button class="btn-primary" style="background: #ef4444;" id="confirm-delete-whatsapp-btn">
+                    <i class="fas fa-trash"></i>
+                    <span>حذف</span>
+                </button>
+                <button type="button" onclick="closeModal('delete-whatsapp-contact-modal')" class="btn-secondary">
+                    إلغاء
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Location Confirmation Modal -->
+    <div id="delete-location-modal" class="modal modal-hidden">
+        <div class="modal-content">
+            <h3>تأكيد الحذف</h3>
+            <p style="color: #d1d5db; margin: 20px 0; text-align: center;">
+                هل أنت متأكد من حذف هذا الموقع؟
+            </p>
+            <div class="form-actions">
+                <button class="btn-primary" style="background: #ef4444;" id="confirm-delete-location-btn">
+                    <i class="fas fa-trash"></i>
+                    <span>حذف</span>
+                </button>
+                <button type="button" onclick="closeModal('delete-location-modal')" class="btn-secondary">
+                    إلغاء
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Delete Phone Confirmation Modal -->
+    <div id="delete-phone-modal" class="modal modal-hidden">
+        <div class="modal-content">
+            <h3>تأكيد الحذف</h3>
+            <p style="color: #d1d5db; margin: 20px 0; text-align: center;">
+                هل أنت متأكد من حذف هذا الرقم؟
+            </p>
+            <div class="form-actions">
+                <button class="btn-primary" style="background: #ef4444;" id="confirm-delete-phone-btn">
+                    <i class="fas fa-trash"></i>
+                    <span>حذف</span>
+                </button>
+                <button type="button" onclick="closeModal('delete-phone-modal')" class="btn-secondary">
+                    إلغاء
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script src="./dashboard.js"></script>
 </body>
 

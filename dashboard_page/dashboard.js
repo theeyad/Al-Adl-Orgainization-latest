@@ -241,6 +241,14 @@ function closeModal(modalId) {
   document.getElementById(modalId).classList.add("modal-hidden");
 }
 
+// Show Modal Helper Function
+function showModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    modal.classList.remove('modal-hidden');
+  }
+}
+
 // Handle Add Service Form Submission
 async function handleAddService(event) {
   event.preventDefault();
@@ -2042,6 +2050,9 @@ let whatsappContacts = [];
 let contactLocations = [];
 let contactPhones = [];
 let contactEmail = '';
+let contactToDelete = null;
+let locationToDelete = null;
+let phoneToDelete = null;
 // Load contact page data when contact page is shown
 function loadContactPageData() {
     loadWhatsAppContacts();
@@ -2230,11 +2241,17 @@ async function handleEditWhatsAppContact(event) {
 }
 // Delete WhatsApp contact
 async function deleteWhatsAppContact(index) {
-    if (confirm('هل أنت متأكد من حذف جهة الاتصال هذه؟')) {
-        whatsappContacts.splice(index, 1);
+    contactToDelete = index;
+    showModal('delete-whatsapp-contact-modal');
+    
+    // Set up the confirm button click handler
+    document.getElementById('confirm-delete-whatsapp-btn').onclick = async function() {
+        whatsappContacts.splice(contactToDelete, 1);
         await saveWhatsAppContactsToHTML();
         displayWhatsAppContacts();
-    }
+        closeModal('delete-whatsapp-contact-modal');
+        contactToDelete = null;
+    };
 }
 // Show add location modal
 function showAddLocationModal() {
@@ -2277,11 +2294,17 @@ async function handleEditLocation(event) {
 }
 // Delete location
 async function deleteLocation(index) {
-    if (confirm('هل أنت متأكد من حذف هذا الموقع؟')) {
-        contactLocations.splice(index, 1);
+    locationToDelete = index;
+    showModal('delete-location-modal');
+    
+    // Set up the confirm button click handler
+    document.getElementById('confirm-delete-location-btn').onclick = async function() {
+        contactLocations.splice(locationToDelete, 1);
         await saveContactInfoToHTML();
         displayContactInfo();
-    }
+        closeModal('delete-location-modal');
+        locationToDelete = null;
+    };
 }
 // Show add phone modal
 function showAddPhoneModal() {
@@ -2318,11 +2341,17 @@ async function handleEditPhone(event) {
 }
 // Delete phone
 async function deletePhone(index) {
-    if (confirm('هل أنت متأكد من حذف هذا الرقم؟')) {
-        contactPhones.splice(index, 1);
+    phoneToDelete = index;
+    showModal('delete-phone-modal');
+    
+    // Set up the confirm button click handler
+    document.getElementById('confirm-delete-phone-btn').onclick = async function() {
+        contactPhones.splice(phoneToDelete, 1);
         await saveContactInfoToHTML();
         displayContactInfo();
-    }
+        closeModal('delete-phone-modal');
+        phoneToDelete = null;
+    };
 }
 // Show edit email modal
 function showEditEmailModal() {
