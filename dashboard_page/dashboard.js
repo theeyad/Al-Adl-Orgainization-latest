@@ -189,6 +189,11 @@ function switchPage(page) {
     content.classList.add("page-hidden");
   });
   document.getElementById(`${page}-page`).classList.remove("page-hidden");
+  
+  // Load contact data when contact page is shown
+  if (page === 'contact') {
+    loadContactPageData();
+  }
 }
 
 // Modal Functions
@@ -992,6 +997,15 @@ document.addEventListener("DOMContentLoaded", () => {
     .querySelector('.nav-item[data-page="posts"]')
     ?.addEventListener("click", renderPublications);
 });
+
+
+
+
+
+
+
+
+// ==================== Cases Functions ====================
 
 // Filter and Search Cases
 function applyFiltersAndRender() {
@@ -2020,3 +2034,323 @@ document.addEventListener("DOMContentLoaded", () => {
   renderAdministrativeTable();
   renderCards();
 });
+
+// ==================== Contact Management Functions ====================
+
+// Global storage for contact data
+let whatsappContacts = [];
+let contactLocations = [];
+let contactPhones = [];
+let contactEmail = '';
+// Load contact page data when contact page is shown
+function loadContactPageData() {
+    loadWhatsAppContacts();
+    loadContactInfo();
+}
+// Load WhatsApp contacts from contact.html
+async function loadWhatsAppContacts() {
+    try {
+        const response = await fetch('../contact_page/contact.html');
+        const contactHTML = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(contactHTML, 'text/html');
+        
+        const contactElements = doc.querySelectorAll('.whatsapp-contact');
+        whatsappContacts = Array.from(contactElements).map(el => ({
+            name: el.querySelector('.contact-name')?.textContent || '',
+            phone: el.getAttribute('data-phone') || '',
+            image: el.querySelector('.contact-photo')?.getAttribute('src') || '../img/logo1.png'
+        }));
+        
+        displayWhatsAppContacts();
+    } catch (error) {
+        console.error('Error loading WhatsApp contacts:', error);
+        alert('فشل تحميل جهات الاتصال');
+    }
+}
+// Display WhatsApp contacts in grid
+function displayWhatsAppContacts() {
+    const grid = document.getElementById('whatsapp-contacts-grid');
+    if (!grid) return;
+    
+    grid.innerHTML = whatsappContacts.map((contact, index) => `
+        <div class="whatsapp-contact-card">
+            <img src="${contact.image}" alt="${contact.name}">
+            <div class="contact-name">${contact.name}</div>
+            <div class="contact-phone">${contact.phone}</div>
+            <div class="card-actions">
+                <button class="btn-edit" onclick="showEditWhatsAppContactModal(${index})">
+                    <i class="fas fa-edit"></i> تعديل
+                </button>
+                <button class="btn-delete" onclick="deleteWhatsAppContact(${index})">
+                    <i class="fas fa-trash"></i> حذف
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+// Load contact information (locations, phones, email)
+async function loadContactInfo() {
+    try {
+        const response = await fetch('../contact_page/contact.html');
+        const contactHTML = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(contactHTML, 'text/html');
+        
+        // Load locations
+        const locationElements = doc.querySelectorAll('.info-container:first-child .location');
+        contactLocations = Array.from(locationElements).map(el => {
+            const text = el.querySelector('span:last-child')?.innerHTML || '';
+            const parts = text.split('<br>');
+            return {
+                country: parts[0]?.trim() || '',
+                cities: parts[1]?.trim() || ''
+            };
+        });
+        
+        // Load phone numbers
+        const phoneElements = doc.querySelectorAll('.info-container:nth-child(2) .phone a');
+        contactPhones = Array.from(phoneElements).map(el => el.textContent.trim());
+        
+        // Load email
+        const emailElement = doc.querySelector('.info-container:nth-child(3) .email a');
+        contactEmail = emailElement?.textContent.trim() || '';
+        
+        displayContactInfo();
+    } catch (error) {
+        console.error('Error loading contact info:', error);
+        alert('فشل تحميل معلومات الاتصال');
+    }
+}
+// Display contact information
+function displayContactInfo() {
+    // Display locations
+    const locationsList = document.getElementById('locations-list');
+    if (locationsList) {
+        locationsList.innerHTML = contactLocations.map((loc, index) => `
+            <div class="contact-info-item">
+                <div class="info-text">
+                    <strong>${loc.country}</strong><br>
+                    ${loc.cities}
+                </div>
+                <div class="info-actions">
+                    <button class="btn-edit" onclick="showEditLocationModal(${index})">
+                        <i class="fas fa-edit"></i> تعديل
+                    </button>
+                    <button class="btn-delete" onclick="deleteLocation(${index})">
+                        <i class="fas fa-trash"></i> حذف
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    // Display phone numbers
+    const phonesList = document.getElementById('phones-list');
+    if (phonesList) {
+        phonesList.innerHTML = contactPhones.map((phone, index) => `
+            <div class="contact-info-item">
+                <div class="info-text" dir="ltr">${phone}</div>
+                <div class="info-actions">
+                    <button class="btn-edit" onclick="showEditPhoneModal(${index})">
+                        <i class="fas fa-edit"></i> تعديل
+                    </button>
+                    <button class="btn-delete" onclick="deletePhone(${index})">
+                        <i class="fas fa-trash"></i> حذف
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    // Display email
+    const emailDisplay = document.getElementById('email-display');
+    if (emailDisplay) {
+        emailDisplay.textContent = contactEmail;
+    }
+}
+// Show add WhatsApp contact modal
+function showAddWhatsAppContactModal() {
+    document.getElementById('whatsapp-contact-name').value = '';
+    document.getElementById('whatsapp-contact-phone').value = '';
+    document.getElementById('whatsapp-contact-image').value = '';
+    document.getElementById('image-preview').innerHTML = '';
+    showModal('add-whatsapp-contact-modal');
+}
+// Handle add WhatsApp contact
+async function handleAddWhatsAppContact(event) {
+    event.preventDefault();
+    
+    const name = document.getElementById('whatsapp-contact-name').value;
+    const phone = document.getElementById('whatsapp-contact-phone').value;
+    const imageFile = document.getElementById('whatsapp-contact-image').files[0];
+    
+    let imagePath = '../img/logo1.png';
+    if (imageFile) {
+        // In a real implementation, you would upload the image
+        // For now, we'll use the default logo
+        imagePath = '../img/logo1.png';
+    }
+    
+    whatsappContacts.push({ name, phone, image: imagePath });
+    await saveWhatsAppContactsToHTML();
+    displayWhatsAppContacts();
+    closeModal('add-whatsapp-contact-modal');
+}
+// Show edit WhatsApp contact modal
+function showEditWhatsAppContactModal(index) {
+    const contact = whatsappContacts[index];
+    document.getElementById('edit-whatsapp-contact-index').value = index;
+    document.getElementById('edit-whatsapp-contact-name').value = contact.name;
+    document.getElementById('edit-whatsapp-contact-phone').value = contact.phone;
+    document.getElementById('edit-image-preview').innerHTML = 
+        `<img src="${contact.image}" alt="${contact.name}">`;
+    showModal('edit-whatsapp-contact-modal');
+}
+// Handle edit WhatsApp contact
+async function handleEditWhatsAppContact(event) {
+    event.preventDefault();
+    
+    const index = parseInt(document.getElementById('edit-whatsapp-contact-index').value);
+    const name = document.getElementById('edit-whatsapp-contact-name').value;
+    const phone = document.getElementById('edit-whatsapp-contact-phone').value;
+    const imageFile = document.getElementById('edit-whatsapp-contact-image').files[0];
+    
+    whatsappContacts[index].name = name;
+    whatsappContacts[index].phone = phone;
+    
+    if (imageFile) {
+        // In a real implementation, you would upload the image
+        whatsappContacts[index].image = '../img/logo1.png';
+    }
+    
+    await saveWhatsAppContactsToHTML();
+    displayWhatsAppContacts();
+    closeModal('edit-whatsapp-contact-modal');
+}
+// Delete WhatsApp contact
+async function deleteWhatsAppContact(index) {
+    if (confirm('هل أنت متأكد من حذف جهة الاتصال هذه؟')) {
+        whatsappContacts.splice(index, 1);
+        await saveWhatsAppContactsToHTML();
+        displayWhatsAppContacts();
+    }
+}
+// Show add location modal
+function showAddLocationModal() {
+    document.getElementById('location-country').value = '';
+    document.getElementById('location-cities').value = '';
+    showModal('add-location-modal');
+}
+// Handle add location
+async function handleAddLocation(event) {
+    event.preventDefault();
+    
+    const country = document.getElementById('location-country').value;
+    const cities = document.getElementById('location-cities').value;
+    
+    contactLocations.push({ country, cities });
+    await saveContactInfoToHTML();
+    displayContactInfo();
+    closeModal('add-location-modal');
+}
+// Show edit location modal
+function showEditLocationModal(index) {
+    const location = contactLocations[index];
+    document.getElementById('edit-location-index').value = index;
+    document.getElementById('edit-location-country').value = location.country;
+    document.getElementById('edit-location-cities').value = location.cities;
+    showModal('edit-location-modal');
+}
+// Handle edit location
+async function handleEditLocation(event) {
+    event.preventDefault();
+    
+    const index = parseInt(document.getElementById('edit-location-index').value);
+    const country = document.getElementById('edit-location-country').value;
+    const cities = document.getElementById('edit-location-cities').value;
+    
+    contactLocations[index] = { country, cities };
+    await saveContactInfoToHTML();
+    displayContactInfo();
+    closeModal('edit-location-modal');
+}
+// Delete location
+async function deleteLocation(index) {
+    if (confirm('هل أنت متأكد من حذف هذا الموقع؟')) {
+        contactLocations.splice(index, 1);
+        await saveContactInfoToHTML();
+        displayContactInfo();
+    }
+}
+// Show add phone modal
+function showAddPhoneModal() {
+    document.getElementById('phone-number').value = '';
+    showModal('add-phone-modal');
+}
+// Handle add phone
+async function handleAddPhone(event) {
+    event.preventDefault();
+    
+    const phone = document.getElementById('phone-number').value;
+    contactPhones.push(phone);
+    await saveContactInfoToHTML();
+    displayContactInfo();
+    closeModal('add-phone-modal');
+}
+// Show edit phone modal
+function showEditPhoneModal(index) {
+    document.getElementById('edit-phone-index').value = index;
+    document.getElementById('edit-phone-number').value = contactPhones[index];
+    showModal('edit-phone-modal');
+}
+// Handle edit phone
+async function handleEditPhone(event) {
+    event.preventDefault();
+    
+    const index = parseInt(document.getElementById('edit-phone-index').value);
+    const phone = document.getElementById('edit-phone-number').value;
+    
+    contactPhones[index] = phone;
+    await saveContactInfoToHTML();
+    displayContactInfo();
+    closeModal('edit-phone-modal');
+}
+// Delete phone
+async function deletePhone(index) {
+    if (confirm('هل أنت متأكد من حذف هذا الرقم؟')) {
+        contactPhones.splice(index, 1);
+        await saveContactInfoToHTML();
+        displayContactInfo();
+    }
+}
+// Show edit email modal
+function showEditEmailModal() {
+    document.getElementById('email-address').value = contactEmail;
+    showModal('edit-email-modal');
+}
+// Handle edit email
+async function handleEditEmail(event) {
+    event.preventDefault();
+    
+    contactEmail = document.getElementById('email-address').value;
+    await saveContactInfoToHTML();
+    displayContactInfo();
+    closeModal('edit-email-modal');
+}
+// Save WhatsApp contacts to contact.html
+async function saveWhatsAppContactsToHTML() {
+    alert('⚠️ حفظ التغييرات غير متاح حالياً\n\nلحفظ التغييرات، يجب إضافة واجهة برمجية على الخادم (Server-side API)');
+    console.warn('File writing requires server-side implementation');
+    
+    // For now, just update the display
+    displayWhatsAppContacts();
+}
+// Save contact info to contact.html
+async function saveContactInfoToHTML() {
+    alert('⚠️ حفظ التغييرات غير متاح حالياً\n\nلحفظ التغييرات، يجب إضافة واجهة برمجية على الخادم (Server-side API)');
+    console.warn('File writing requires server-side implementation');
+    
+    // For now, just update the display
+    displayContactInfo();
+}

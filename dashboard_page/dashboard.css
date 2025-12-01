@@ -1125,3 +1125,224 @@ body {
     font-size: 10px;
   }
 }
+
+
+/* Contact Management Styles */
+
+/* Contact Info Subsections */
+.contact-info-subsection {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #1f2937;
+    border-radius: 12px;
+    border: 1px solid #374151;
+}
+.subsection-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #374151;
+}
+.subsection-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #f3c623;
+}
+/* Contact Info List */
+.contact-info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.contact-info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #111827;
+    border-radius: 8px;
+    border: 1px solid #374151;
+    transition: all 0.3s ease;
+}
+.contact-info-item:hover {
+    border-color: #f3c623;
+    transform: translateX(-5px);
+}
+.contact-info-item .info-text {
+    flex: 1;
+    color: #d1d5db;
+    font-size: 14px;
+    text-align: right;
+}
+.contact-info-item .info-actions {
+    display: flex;
+    gap: 8px;
+}
+.contact-info-item .info-actions button {
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.contact-info-item .info-actions .btn-edit {
+    background-color: #3b82f6;
+    color: white;
+}
+.contact-info-item .info-actions .btn-edit:hover {
+    background-color: #2563eb;
+}
+.contact-info-item .info-actions .btn-delete {
+    background-color: #ef4444;
+    color: white;
+}
+.contact-info-item .info-actions .btn-delete:hover {
+    background-color: #dc2626;
+}
+/* Email Display */
+.email-display {
+    padding: 15px;
+    background-color: #111827;
+    border-radius: 8px;
+    border: 1px solid #374151;
+    color: #d1d5db;
+    font-size: 16px;
+    text-align: center;
+}
+/* Image Preview */
+.image-preview {
+    margin-top: 10px;
+    min-height: 100px;
+    border: 2px dashed #374151;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.image-preview img {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 8px;
+}
+.image-preview.empty {
+    color: #6b7280;
+    font-size: 14px;
+}
+/* WhatsApp Contact Card */
+.whatsapp-contact-card {
+    background-color: #1f2937;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #374151;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+.whatsapp-contact-card:hover {
+    padding-top: 3.5em;
+    border-color: #f3c623;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(243, 198, 35, 0.2);
+}
+.whatsapp-contact-card img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border: 3px solid #f3c623;
+}
+.whatsapp-contact-card .contact-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 8px;
+}
+.whatsapp-contact-card .contact-phone {
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.whatsapp-contact-card .card-actions {
+  display: none;
+}
+
+.whatsapp-contact-card:hover .card-actions {
+  display: flex;
+}
+
+.whatsapp-contact-card .card-actions button {
+  padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.whatsapp-contact-card .card-actions .btn-edit {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.whatsapp-contact-card .card-actions .btn-edit:hover {
+    background-color: #2563eb;
+}
+
+.whatsapp-contact-card .card-actions .btn-delete {
+    background-color: #ef4444;
+    color: white;
+}
+
+.whatsapp-contact-card .card-actions .btn-delete:hover {
+    background-color: #dc2626;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .contact-info-subsection {
+        padding: 15px;
+    }
+    .subsection-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .subsection-header h3 {
+        font-size: 16px;
+    }
+    .contact-info-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .contact-info-item .info-actions {
+        width: 100%;
+    }
+    .contact-info-item .info-actions button {
+        flex: 1;
+    }
+    .subsection-header h3 {
+        font-size: 16px;
+    }
+    .contact-info-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .contact-info-item .info-actions {
+        width: 100%;
+    }
+    .contact-info-item .info-actions button {
+        flex: 1;
+    }
+}

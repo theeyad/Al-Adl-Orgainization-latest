@@ -53,6 +53,10 @@
                 <i class="fas fa-newspaper"></i>
                 <span>المنشورات</span>
             </a>
+            <a class="nav-item" data-page="contact">
+                <i class="fas fa-address-book"></i>
+                <span>التواصل</span>
+            </a>
             <a class="nav-item" data-page="cases">
                 <i class="fas fa-gavel"></i>
                 <span>جدول القضايا</span>
@@ -208,6 +212,61 @@
                         </button>
                     </div>
                     <div id="publications-cards" class="cards-grid"></div>
+                </section>
+            </div>
+
+            <!-- Contact Page -->
+            <div id="contact-page" class="page-content page-hidden">
+                <!-- WhatsApp Contacts Section -->
+                <section class="content-section">
+                    <div class="section-header">
+                        <h2>جهات الاتصال عبر واتساب</h2>
+                        <button class="btn-primary" onclick="showAddWhatsAppContactModal()">
+                            <i class="fas fa-plus"></i>
+                            <span>إضافة جهة اتصال</span>
+                        </button>
+                    </div>
+                    <div id="whatsapp-contacts-grid" class="cards-grid"></div>
+                </section>
+                <!-- Contact Information Section -->
+                <section class="content-section">
+                    <div class="section-header">
+                        <h2>معلومات الاتصال</h2>
+                    </div>
+
+                    <!-- Locations Subsection -->
+                    <div class="contact-info-subsection">
+                        <div class="subsection-header">
+                            <h3>مقر المؤسسة</h3>
+                            <button class="btn-secondary" onclick="showAddLocationModal()">
+                                <i class="fas fa-plus"></i>
+                                <span>إضافة موقع</span>
+                            </button>
+                        </div>
+                        <div id="locations-list" class="contact-info-list"></div>
+                    </div>
+                    <!-- Phone Numbers Subsection -->
+                    <div class="contact-info-subsection">
+                        <div class="subsection-header">
+                            <h3>الخط الساخن</h3>
+                            <button class="btn-secondary" onclick="showAddPhoneModal()">
+                                <i class="fas fa-plus"></i>
+                                <span>إضافة رقم</span>
+                            </button>
+                        </div>
+                        <div id="phones-list" class="contact-info-list"></div>
+                    </div>
+                    <!-- Email Subsection -->
+                    <div class="contact-info-subsection">
+                        <div class="subsection-header">
+                            <h3>البريد الإلكتروني</h3>
+                            <button class="btn-secondary" onclick="showEditEmailModal()">
+                                <i class="fas fa-edit"></i>
+                                <span>تعديل</span>
+                            </button>
+                        </div>
+                        <div id="email-display" class="email-display"></div>
+                    </div>
                 </section>
             </div>
 
@@ -751,6 +810,153 @@
                     <button type="submit" class="btn-primary">تطبيق الفلترة</button>
                     <button type="button" onclick="closeAdministrativeFilterModal()"
                         class="btn-secondary">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add WhatsApp Contact Modal -->
+    <div id="add-whatsapp-contact-modal" class="modal modal-hidden">
+        <div class="modal-content">
+            <h3>إضافة جهة اتصال واتساب</h3>
+            <form id="add-whatsapp-contact-form" onsubmit="handleAddWhatsAppContact(event)">
+                <div class="form-group">
+                    <label>الاسم</label>
+                    <input type="text" id="whatsapp-contact-name" required>
+                </div>
+                <div class="form-group">
+                    <label>رقم الواتساب</label>
+                    <input type="tel" id="whatsapp-contact-phone" placeholder="201234567890" required>
+                </div>
+                <div class="form-group">
+                    <label>صورة الملف الشخصي</label>
+                    <input type="file" id="whatsapp-contact-image" accept="image/*">
+                    <div id="image-preview" class="image-preview"></div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">إضافة</button>
+                    <button type="button" onclick="closeModal('add-whatsapp-contact-modal')"
+                        class="btn-secondary">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Edit WhatsApp Contact Modal -->
+    <div id="edit-whatsapp-contact-modal" class="modal modal-hidden">
+        <div class="modal-content">
+            <h3>تعديل جهة اتصال واتساب</h3>
+            <form id="edit-whatsapp-contact-form" onsubmit="handleEditWhatsAppContact(event)">
+                <input type="hidden" id="edit-whatsapp-contact-index">
+                <div class="form-group">
+                    <label>الاسم</label>
+                    <input type="text" id="edit-whatsapp-contact-name" required>
+                </div>
+                <div class="form-group">
+                    <label>رقم الواتساب</label>
+                    <input type="tel" id="edit-whatsapp-contact-phone" required>
+                </div>
+                <div class="form-group">
+                    <label>صورة الملف الشخصي</label>
+                    <input type="file" id="edit-whatsapp-contact-image" accept="image/*">
+                    <div id="edit-image-preview" class="image-preview"></div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">حفظ التغييرات</button>
+                    <button type="button" onclick="closeModal('edit-whatsapp-contact-modal')"
+                        class="btn-secondary">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Add Location Modal -->
+    <div id="add-location-modal" class="modal modal-hidden">
+        <div class="modal-content">
+            <h3>إضافة موقع</h3>
+            <form id="add-location-form" onsubmit="handleAddLocation(event)">
+                <div class="form-group">
+                    <label>الدولة</label>
+                    <input type="text" id="location-country" placeholder="مثال: مصر" required>
+                </div>
+                <div class="form-group">
+                    <label>المدن</label>
+                    <input type="text" id="location-cities" placeholder="مثال: القاهرة - مدينة السادات - الإسكندرية"
+                        required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">إضافة</button>
+                    <button type="button" onclick="closeModal('add-location-modal')"
+                        class="btn-secondary">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Edit Location Modal -->
+    <div id="edit-location-modal" class="modal modal-hidden">
+        <div class="modal-content">
+            <h3>تعديل موقع</h3>
+            <form id="edit-location-form" onsubmit="handleEditLocation(event)">
+                <input type="hidden" id="edit-location-index">
+                <div class="form-group">
+                    <label>الدولة</label>
+                    <input type="text" id="edit-location-country" required>
+                </div>
+                <div class="form-group">
+                    <label>المدن</label>
+                    <input type="text" id="edit-location-cities" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">حفظ التغييرات</button>
+                    <button type="button" onclick="closeModal('edit-location-modal')"
+                        class="btn-secondary">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Add Phone Modal -->
+    <div id="add-phone-modal" class="modal modal-hidden">
+        <div class="modal-content">
+            <h3>إضافة رقم هاتف</h3>
+            <form id="add-phone-form" onsubmit="handleAddPhone(event)">
+                <div class="form-group">
+                    <label>رقم الهاتف</label>
+                    <input type="tel" id="phone-number" placeholder="+966 54 171 3058" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">إضافة</button>
+                    <button type="button" onclick="closeModal('add-phone-modal')" class="btn-secondary">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Edit Phone Modal -->
+    <div id="edit-phone-modal" class="modal modal-hidden">
+        <div class="modal-content">
+            <h3>تعديل رقم هاتف</h3>
+            <form id="edit-phone-form" onsubmit="handleEditPhone(event)">
+                <input type="hidden" id="edit-phone-index">
+                <div class="form-group">
+                    <label>رقم الهاتف</label>
+                    <input type="tel" id="edit-phone-number" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">حفظ التغييرات</button>
+                    <button type="button" onclick="closeModal('edit-phone-modal')" class="btn-secondary">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Edit Email Modal -->
+    <div id="edit-email-modal" class="modal modal-hidden">
+        <div class="modal-content">
+            <h3>تعديل البريد الإلكتروني</h3>
+            <form id="edit-email-form" onsubmit="handleEditEmail(event)">
+                <div class="form-group">
+                    <label>البريد الإلكتروني</label>
+                    <input type="email" id="email-address" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">حفظ التغييرات</button>
+                    <button type="button" onclick="closeModal('edit-email-modal')" class="btn-secondary">إلغاء</button>
                 </div>
             </form>
         </div>
